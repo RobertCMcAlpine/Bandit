@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -27,7 +28,7 @@ class Band(models.Model):
     GENRE_OPTIONS = (
                     ("Alternative","Alternative"),
                      ("Blues/R&B","Blues/R&B"),
-                     ("Childrenís Music","Childrenís Music"),
+                     ("Childrens Music","Childrens Music"),
                      ("Classical","Classical"),
                      ("Country","Country"),
                      ("Dance","Dance"),
@@ -49,7 +50,7 @@ class Band(models.Model):
                      ("Unclassifiable","Unclassifiable"),
                      ("World","World"),
                     )
-    genre = models.CharField(choices=GENRE_OPTIONS)
+    genre = models.CharField(choices=GENRE_OPTIONS, max_length=128)
 
     def __unicode__(self):
         return self.profile.name
