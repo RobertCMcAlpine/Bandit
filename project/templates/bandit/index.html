@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bandit</title>
+    </head>
+    
+    <body>
+        {% if user.is_authenticated %}
+        <h1>Bandit says... hello {{ user.username }}!</h1>
+        {% else %}
+        <h1>Bandit says... hello world!</h1>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+        <a href="/bandit/restricted/">Restricted Page</a><br />
+        <a href="/bandit/logout/">Logout</a><br />
+        {% else %}
+        <a href="/bandit/register/">Register Here</a><br />
+        <a href="/bandit/login/">Login</a><br />
+        {% endif %}
+    </body>
+</html>
