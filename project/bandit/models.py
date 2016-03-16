@@ -1,14 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from datetime import datetime
+from datetime import date,time
 
 # Create your models here.
+
+def get_image_path(instance, filename):
+    return os.path.join("profiles", str(instance.id), filename)
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=128)
-    profile_picture = models.ForeignKey(Image, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to=get_image_path, blank=True, null=True)
     city = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
@@ -68,12 +71,12 @@ class Venue(models.Model):
 
 class Event(models.Model):
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
-    band = models.ForeignKey(Band, on_delete=models.CASCADE)
+    band = models.ForeignKey(Band, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=128)
-    date = models.DateField(_("Date"), default=datetime.date.today)
+    date = models.DateField(("Date"), default=date.today)
 # start time? end time? decide later
     start_time = models.TimeField()
-    end_time = models.TimeField()
+    end_time = models.TimeField(null=True, blank=True)
     reward = models.CharField(max_length=512)
     description = models.CharField(max_length=1024)
 
@@ -83,8 +86,8 @@ class Event(models.Model):
 class Request(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
-    request_date = models.DateField(_("Date"), default=datetime.date.today)
-    seen = models.BooleanField(default=false)
+    request_date = models.DateField(("Date"), default=date.today)
+    seen = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.event
