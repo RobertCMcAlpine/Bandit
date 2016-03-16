@@ -1,5 +1,5 @@
 from django.contrib import admin
-from bandit.models import Profile
+from bandit.models import Profile, Band, Venue, Event, Request, Image
 
 # Register your models here.
 
