@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from datetime import datetime
+
 # Create your models here.
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=128)
+    profile_picture = models.ForeignKey(Image, on_delete=models.CASCADE)
     city = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
@@ -15,7 +18,7 @@ class Profile(models.Model):
                    ('V', 'Venue'),
                    )
                    
-    type = models.CharField(max_length=1, choices=TYPE_OPTIONS)
+    profile_type = models.CharField(max_length=1, choices=TYPE_OPTIONS)
     website = models.URLField(blank=True)
     
     def __unicode__(self):
@@ -67,7 +70,7 @@ class Event(models.Model):
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
-    date = models.DateField()
+    date = models.DateField(_("Date"), default=datetime.date.today)
 # start time? end time? decide later
     start_time = models.TimeField()
     end_time = models.TimeField()
@@ -76,3 +79,20 @@ class Event(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Request(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    band = models.ForeignKey(Band, on_delete=models.CASCADE)
+    request_date = models.DateField(_("Date"), default=datetime.date.today)
+    seen = models.BooleanField(default=false)
+
+    def __unicode__(self):
+        return self.event
+
+class Image(models.Model):
+    profile = models.OneToOneField(Profile)
+    path = models.CharField(max_length=128)
+    alt = models.CharField(max_length=128)
+
+    def __unicode__(self):
+        return self.alt
