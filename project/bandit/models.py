@@ -90,10 +90,10 @@ class Request(models.Model):
     seen = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.event
+        return self.event.name
 
 class Image(models.Model):
-    profile = models.OneToOneField(Profile)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     path = models.CharField(max_length=128)
     alt = models.CharField(max_length=128)
 
