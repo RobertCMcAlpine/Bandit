@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 from datetime import date,time
+from django.template.defaultfilters import slugify
 
-# Create your models here.
 
 def get_image_path(instance, filename):
     return os.path.join("profiles", str(instance.id), filename)
@@ -27,7 +26,7 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
+        super(Profile, self).save(*args, **kwargs)
     
     def __unicode__(self):
         return self.user.username
@@ -88,7 +87,7 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
+        super(Event, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
