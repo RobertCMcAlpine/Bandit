@@ -23,6 +23,11 @@ class Profile(models.Model):
                    
     profile_type = models.CharField(max_length=1, choices=TYPE_OPTIONS)
     website = models.URLField(blank=True)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
     
     def __unicode__(self):
         return self.user.username
@@ -79,6 +84,11 @@ class Event(models.Model):
     end_time = models.TimeField(null=True, blank=True)
     reward = models.CharField(max_length=512)
     description = models.CharField(max_length=1024)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
