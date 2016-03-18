@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BANDit</title>
+    </head>
+
+    <body>
+        {% if event %}
+        <h1>{{ event_name }}</h1>
+        <h3>Owner: <a href="TBA">{{ venue }}</a></h3>
+            {% if requests %}
+            <ul>
+                {% for request in requests %}
+                <li><a href="TBA">{{ request.band }}</a>, {{ request.request_date }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <strong>No requests currently in event.</strong>
+            {% endif %}
+        {% else %}
+            The specified event {{ event_name }} does not exist!
+        {% endif %}
+    </body>
+</html>

@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from bandit.forms import UserForm, UserProfileForm
-from django.contrib.auth import authenticate, login
+from bandit.models import Profile, Band, Venue, Event, Request, Image
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 
 
 def index(request):
@@ -126,3 +126,26 @@ def user_logout(request):
     
     # Take the user back to the homepage.
     return HttpResponseRedirect('/bandit/')
+
+def event(request, event_name_slug):
+    context_dict = {}
+
+    try:
+        # Can we find an event name slug with the given name?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        event = Event.objects.get(slug=event_name_slug)
+        context_dict['event'] = event
+        context_dict['event_name'] = event.name
+
+        # Retrieve the venue-owner of this event.
+        venue = event.venue
+        context_dict['venue'] = venue
+
+        # Retrieve the requests for this event.
+        requests = Request.objects.filter(event=event)
+        context_dict['requests'] = requests
+
+    except Event.DoesNotExist:
+        pass
+
+    return render(request, 'bandit/event.html', context_dict)
