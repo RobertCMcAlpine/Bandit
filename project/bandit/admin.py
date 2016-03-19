@@ -5,7 +5,7 @@ class ProfileAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('name',)}
 
 class EventAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug':('name',)}
+    prepopulated_fields = {'slug':('date',)}
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Band)
