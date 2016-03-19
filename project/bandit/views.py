@@ -127,56 +127,14 @@ def user_logout(request):
     # Take the user back to the homepage.
     return HttpResponseRedirect('/bandit/')
 
-def event(request, event_name_slug):
-    context_dict = {}
 
-    try:
-        # Can we find an event name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        event = Event.objects.get(slug=event_name_slug)
-        context_dict['event'] = event
-        context_dict['event_name'] = event.name
-
-        # Retrieve the venue-owner of this event.
-        venue = event.venue
-        context_dict['venue'] = venue
-
-        # Show user-specific content...
-        if request.user.is_authenticated():
-            profile = Profile.objects.get(user=request.user)
-            context_dict['username'] = request.user.username
-
-            # If the user is the venue-owner of the event, show the list of requests
-            if venue.profile == profile:
-                # Retrieve the requests for this event.
-                requests = Request.objects.filter(event=event)
-                context_dict['requests'] = requests
-
-            # If the user is a band...
-            # ... and hasn't requested to play this gig, show a 'Request' button.
-            # ... and has requested to play this gig, show the date of request.
-            try:
-                band = Band.objects.get(profile=profile)
-                context_dict['band'] = band
-            except Band.DoesNotExist:
-                band = None
-
-            if not band == None:
-                gig_request = Request.objects.get(event=event, band=band)
-                context_dict['gig_request'] = gig_request
-
-    except (Event.DoesNotExist, Profile.DoesNotExist, Request.DoesNotExist):
-        pass
-
-    return render(request, 'bandit/event.html', context_dict)
-
-def band(request, profile_name_slug):
+def band(request, band_profile_name_slug):
     context_dict = {}
 
     try:
         # Can we find a profile name slug with the given name?
         # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=profile_name_slug)
+        profile = Profile.objects.get(slug=band_profile_name_slug)
         context_dict['profile'] = profile
         context_dict['profile_name'] = profile.name
 
@@ -190,13 +148,13 @@ def band(request, profile_name_slug):
 
     return render(request, 'bandit/band.html', context_dict)
 
-def venue(request, profile_name_slug):
+def venue(request, venue_profile_name_slug):
     context_dict = {}
 
     try:
         # Can we find a profile name slug with the given name?
         # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=profile_name_slug)
+        profile = Profile.objects.get(slug=venue_profile_name_slug)
         context_dict['profile'] = profile
         context_dict['profile_name'] = profile.name
         
@@ -223,13 +181,70 @@ def venue(request, profile_name_slug):
 
     return render(request, 'bandit/venue.html', context_dict)
 
-def request(request, event_name_slug, profile_name_slug):
+def event(request, venue_profile_name_slug, event_date_slug):
     context_dict = {}
 
     try:
-        # Can we find an event name slug with the given name?
+        # Can we find a profile name slug with the given name?
         # If we can't, the .get() method raises a DoesNotExist exception.
-        event = Event.objects.get(slug=event_name_slug)
+        profile = Profile.objects.get(slug=venue_profile_name_slug)
+        
+        # Does this profile correspond to a venue?
+        # If not, the .get() method raises a DoesNotExist exception.
+        venue = Venue.objects.get(profile=profile)
+        context_dict['venue'] = venue
+
+        # Can we find an event of that venue for that date?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        event = Event.objects.get(slug=event_date_slug, venue=venue)
+        context_dict['event'] = event
+        context_dict['event_name'] = event.name
+
+        # Show user-specific content...
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            context_dict['username'] = request.user.username
+
+            # If the user is the venue-owner of the event, show the list of requests
+            if venue.profile == profile:
+                # Retrieve the requests for this event.
+                requests = Request.objects.filter(event=event)
+                context_dict['requests'] = requests
+
+            # If the user is a band...
+            # ... and hasn't requested to play this gig, show a 'Request' button.
+            # ... and has requested to play this gig, show the date of request.
+            try:
+                band = Band.objects.get(profile=profile)
+                context_dict['band'] = band
+            except Band.DoesNotExist:
+                band = None
+
+            if not band == None:
+                gig_request = Request.objects.get(event=event, band=band)
+                context_dict['gig_request'] = gig_request
+
+    except (Event.DoesNotExist, Profile.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist):
+        pass
+
+    return render(request, 'bandit/event.html', context_dict)
+
+def request(request, venue_profile_name_slug, event_date_slug, band_profile_name_slug):
+    context_dict = {}
+
+    try:
+        # Can we find a profile name slug with the given name?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        profile = Profile.objects.get(slug=venue_profile_name_slug)
+        
+        # Does this profile correspond to a venue?
+        # If not, the .get() method raises a DoesNotExist exception.
+        venue = Venue.objects.get(profile=profile)
+        context_dict['venue'] = venue
+
+        # Can we find an event of that venue for that date?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        event = Event.objects.get(slug=event_date_slug, venue=venue)
 
         # Is the user authenticated?
         # If not, contect_dict will remain empty.
@@ -245,7 +260,7 @@ def request(request, event_name_slug, profile_name_slug):
 
                 # Can we find a profile name slug with the given name?
                 # If we can't, the .get() method raises a DoesNotExist exception.
-                profile = Profile.objects.get(slug=profile_name_slug)
+                profile = Profile.objects.get(slug=band_profile_name_slug)
 
                 # Does this profile correspond to a band?
                 # If not, the .get() method raises a DoesNotExist exception.
@@ -266,19 +281,19 @@ def request(request, event_name_slug, profile_name_slug):
                 # We return a 403 (Forbidden)
                 raise PermissionDenied
 
-    except (Event.DoesNotExist, Band.DoesNotExist, Profile.DoesNotExist, Request.DoesNotExist):
+    except (Event.DoesNotExist, Band.DoesNotExist, Profile.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist):
         pass
 
     return render(request, 'bandit/request.html', context_dict)
 
 
-def add_event(request, profile_name_slug):
+def add_event(request, venue_profile_name_slug):
     context_dict = {}
 
     try:
         # Can we find a profile name slug with the given name?
         # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=profile_name_slug)
+        profile = Profile.objects.get(slug=venue_profile_name_slug)
         
         # Does this profile correspond to a venue?
         # If not, the .get() method raises a DoesNotExist exception.
@@ -288,7 +303,7 @@ def add_event(request, profile_name_slug):
         # If not, contect_dict will remain empty.
         if request.user.is_authenticated():
             profile = Profile.objects.get(user=request.user)
-            context_dict['venue_profile_name_slug'] = profile_name_slug
+            context_dict['venue_profile_name_slug'] = venue_profile_name_slug
             # Is the user the the owner of this venue?
             # If so, show him the form!
             if venue.profile == profile:
@@ -306,7 +321,7 @@ def add_event(request, profile_name_slug):
                             new_event.venue = venue
                             new_event.save()
                         # probably better to use a redirect here (?)
-                        return event(request, new_event.slug)
+                        return event(request, venue.profile.slug, new_event.slug)
                     else:
                         # The supplied form contained errors - just print them to the terminal.
                         print form.errors

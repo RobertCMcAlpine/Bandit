@@ -22,7 +22,7 @@
             <h2>Events</h2>
                 <ul>
                 {% for event in events %}
-                    <li><a href="">{{ event.name }} - {{ event.date }}, {{ event.time }}</a></li>
+                    <li><a href="event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.time }}</a></li>
                 {% endfor %}
             </ul>
             {% endif %}

@@ -8,7 +8,15 @@
         {% if event %}
             <h1>{{ event_name }}</h1>
             <h3>Owner: <a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue }}</a></h3>
+
+            <!-- If a band has been allocated to this event, show its name. -->
+            {% if event.band %}
+                <h3>Band: <a href="/bandit/band/{{ event.band.profile.slug }}">{{ event.band }}</a></h3>
+            {% else %}
+                <h3>Band: Not allocated.</h3>
+            {% endif %}
             <p>User: {{ username }} </p>
+
             <!-- If the user is the venue-owner of the event, show list of requests. -->
             {% if requests %}
                 <ul>

@@ -6,7 +6,7 @@
 
     <body>
         {% if event and gig_request %}
-            <h1><a href="/bandit/event/{{ event.slug }}">{{ event_name }}</a></h1>
+            <h1><a href="../../">{{ event_name }}</a></h1>
             <h3>Band: <a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></h3>
             <p>Date of request: {{ gig_request.request_date }}</p>
 
