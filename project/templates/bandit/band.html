@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>BANDit</title>
+    </head>
+
+    <body>
+        {% if profile and band %}
+            <h1>{{ profile_name }}</h1>
+            {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="profile_picture"> <br />
+            {% endif %}
+            Description: {{ profile.description }} <br />
+            City: {{ profile.city }} <br />
+            Phone number: {{ profile.phone_number }} <br />
+            Website: {{ profile.website }} <br />
+            Members: {{ band.number_of_members }} <br />
+            Genre: {{ band.genre }} <br />
+
+        {% else %}
+            The specified band {{ profile_name }} does not exist!
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BANDit</title>
+    </head>
+
+    <body>
+        {% if event and gig_request %}
+            <h1><a href="/bandit/event/{{ event.slug }}">{{ event_name }}</a></h1>
+            <h3>Band: <a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></h3>
+            <p>Date of request: {{ gig_request.request_date }}</p>
+        {% else %}
+            The specified event does not exist, or the specified band has not made a request for it!
+        {% endif %}
+    </body>
+</html>

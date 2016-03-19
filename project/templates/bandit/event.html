@@ -6,12 +6,12 @@
 
     <body>
         {% if event %}
-        <h1>{{ event_name }}</h1>
-        <h3>Owner: <a href="TBA">{{ venue }}</a></h3>
+            <h1>{{ event_name }}</h1>
+            <h3>Owner: <a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue }}</a></h3>
             {% if requests %}
             <ul>
                 {% for request in requests %}
-                <li><a href="TBA">{{ request.band }}</a>, {{ request.request_date }}</li>
+                <li><a href="/bandit/band/{{ request.band.profile.slug }}">{{ request.band }}</a>, {{ request.request_date }}</li>
                 {% endfor %}
             </ul>
             {% else %}

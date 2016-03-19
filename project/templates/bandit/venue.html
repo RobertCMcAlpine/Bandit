@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BANDit</title>
+    </head>
+
+    <body>
+        {% if profile and venue %}
+            <h1>{{ profile_name }}</h1>
+            {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="profile_picture">
+            {% endif %}
+            Description: {{ profile.description }} <br />
+            City: {{ profile.city }} <br />
+            Phone number: {{ profile.phone_number }} <br />
+            Website: {{ profile.website }} <br />
+            Address: {{ venue.address }} <br />
+            Post Code: {{ venue.post_code }} <br />
+
+        {% else %}
+            The specified venue {{ profile_name }} does not exist!
+        {% endif %}
+    </body>
+</html>
