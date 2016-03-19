@@ -149,3 +149,72 @@ def event(request, event_name_slug):
         pass
 
     return render(request, 'bandit/event.html', context_dict)
+
+def band(request, profile_name_slug):
+    context_dict = {}
+
+    try:
+        # Can we find a profile name slug with the given name?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        profile = Profile.objects.get(slug=profile_name_slug)
+        context_dict['profile'] = profile
+        context_dict['profile_name'] = profile.name
+
+        # Does this profile correspond to a band?
+        # If not, the .get() method raises a DoesNotExist exception.
+        band = Band.objects.get(profile=profile)
+        context_dict['band'] = band
+
+    except (Profile.DoesNotExist, Band.DoesNotExist):
+        pass
+
+    return render(request, 'bandit/band.html', context_dict)
+
+def venue(request, profile_name_slug):
+    context_dict = {}
+
+    try:
+        # Can we find a profile name slug with the given name?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        profile = Profile.objects.get(slug=profile_name_slug)
+        context_dict['profile'] = profile
+        context_dict['profile_name'] = profile.name
+        
+        # Does this profile correspond to a venue?
+        # If not, the .get() method raises a DoesNotExist exception.
+        venue = Venue.objects.get(profile=profile)
+        context_dict['venue'] = venue
+
+    except (Profile.DoesNotExist, Venue.DoesNotExist):
+        pass
+
+    return render(request, 'bandit/venue.html', context_dict)
+
+def request(request, event_name_slug, profile_name_slug):
+    context_dict = {}
+
+    try:
+        # Can we find an event name slug with the given name?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        event = Event.objects.get(slug=event_name_slug)
+        context_dict['event'] = event
+        context_dict['event_name'] = event.name
+
+        # Can we find a profile name slug with the given name?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        profile = Profile.objects.get(slug=profile_name_slug)
+
+        # Does this profile correspond to a band?
+        # If not, the .get() method raises a DoesNotExist exception.
+        band = Band.objects.get(profile=profile)
+        context_dict['band'] = band
+
+        # Has this band made a request for this event?
+        # If not, the .get() method raises a DoesNotExist exception.
+        gig_request =  Request.objects.get(event=event, band=band)
+        context_dict['gig_request'] = gig_request
+
+    except (Event.DoesNotExist, Band.DoesNotExist, Profile.DoesNotExist, Request.DoesNotExist):
+        pass
+
+    return render(request, 'bandit/request.html', context_dict)
