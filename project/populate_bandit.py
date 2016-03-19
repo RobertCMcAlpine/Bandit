@@ -17,6 +17,12 @@ def populate():
 		"02392561857", "The coolest band ever.", "B", "www.leifos.com")
 	leif_band = add_band(leif_profile, 3, "Rock")
 
+	# Adding Andy's band, Mouse Rat...
+	andy_user = add_user("andy", "andy@itech.com", "andy")
+	andy_profile = add_profile(andy_user, "Mouse Rat", "-", "Pawnee",
+		"02392561857", "You think you found love, but you're standing in The Pit...", "B", "www.mouse-rat.com")
+	andy_band = add_band(andy_profile, 3, "Rock")
+
 	# Adding Crappy Maths LT Venue...
 	maths_user = add_user("david", "david@itech.com", "david")
 	maths_profile = add_profile(maths_user, "Crappy Maths Lecture Theatre",  "-", "Glasgow",
@@ -24,7 +30,7 @@ def populate():
 	maths_venue = add_venue(maths_profile, "University Of Glasgow", "G12 8AB")
 
 	# Adding Laura's pub
-	laura_user = add_user("laura", "laura@itech.com", "david")
+	laura_user = add_user("laura", "laura@itech.com", "laura")
 	laura_profile = add_profile(laura_user, "Laura's Pub",  "-", "Glasgow",
 		"02392561857", "Best pub in town.", "V", "www.lauraspub.co.uk")
 	laura_venue = add_venue(laura_profile, "7 Pub str", "G12 8AB")
@@ -55,6 +61,7 @@ def add_user(username, email, password):
 	u = User.objects.get_or_create(username=username)[0]
 	u.email = email
 	u.password = password
+	u.set_password(u.password)
 	u.save()
 	return u
 
