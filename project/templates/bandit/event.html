@@ -8,15 +8,27 @@
         {% if event %}
             <h1>{{ event_name }}</h1>
             <h3>Owner: <a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue }}</a></h3>
+            <p>User: {{ username }} </p>
+            <!-- If the user is the venue-owner of the event, show list of requests. -->
             {% if requests %}
-            <ul>
-                {% for request in requests %}
-                <li><a href="/bandit/band/{{ request.band.profile.slug }}">{{ request.band }}</a>, {{ request.request_date }}</li>
-                {% endfor %}
-            </ul>
-            {% else %}
-                <strong>No requests currently in event.</strong>
+                <ul>
+                    {% for request in requests %}
+                    <li><a href="request/{{ request.band.profile.slug }}">{{ request.band }}, {{ request.request_date }}</a></li>
+                    {% endfor %}
+                </ul>
             {% endif %}
+
+            <!-- If the user is a band... -->
+            {% if band %}
+                <!-- ... and has made a request for this event, show the request's date -->
+                {% if gig_request %}
+                    <p>Date of request: {{ gig_request.request_date }}</p>
+                <!-- Otherwise, show a button/link to make a request. -->
+                {% else %}
+                    <a href="">Make request</a>
+                {% endif %}
+            {% endif %}
+
         {% else %}
             The specified event {{ event_name }} does not exist!
         {% endif %}
