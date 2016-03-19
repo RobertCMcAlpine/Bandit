@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+{% load staticfiles %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="{% static "js/bandit-jquery.js" %}"></script>
+
 <html>
     <head>
         <title>BANDit</title>
@@ -11,7 +17,8 @@
             <p>Date of request: {{ gig_request.request_date }}</p>
 
             {% if not accepted_band %}
-                <a href="">Accept</a>
+                <button id="accept_gig_request" data-evid="{{ event.id }}" data-bandid="{{ gig_request.band.id }}" class="btn btn-primary" type="button">Accept Request</button>
+                <strong id="gig_request_accepted"></strong>
             {% endif %}
         {% else %}
             The specified event does not exist, or the specified band has not made a request for it!

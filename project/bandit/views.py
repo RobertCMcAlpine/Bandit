@@ -340,3 +340,55 @@ def add_event(request, venue_profile_name_slug):
     # User is not authorised to add an event for the specified venue.
     # We return 403 (Forbidden)
     raise PermissionDenied
+
+@login_required
+def make_gig_request(request):
+    event_id = None
+    band_id = None
+    if request.method == 'GET':
+        event_id = request.GET['event_id']
+        band_id = request.GET['band_id']
+
+    new_gig_request = None
+    response = ""
+    if band_id and event_id:
+        event = Event.objects.get(id=int(event_id))
+        band = Band.objects.get(id=int(band_id))
+        if band and event:
+            # Continue only if band hasn't already made a request
+            existing_gig_request = None
+            try:
+                existing_gig_request = Request.objects.get(event=event, band=band)
+                response = "This request already exists!"
+            except Exception, e:
+                new_gig_request = Request.objects.get_or_create(event=event, band=band)[0]
+                response = "Request sent."
+
+    return HttpResponse(response)
+
+
+@login_required
+def accept_gig_request(request):
+    event_id = None
+    band_id = None
+    if request.method == 'GET':
+        event_id = request.GET['event_id']
+        band_id = request.GET['band_id']
+
+    response = ""
+    if band_id and event_id:
+        event = Event.objects.get(id=int(event_id))
+        band = Band.objects.get(id=int(band_id))
+        if band and event:
+            # Is a band already booked for this event?
+            # If so, return error message.
+            # If not, book this band!
+            if not event.band:
+                event.band = band
+                event.save()
+                response = "Request accepted."
+            else:
+                response = "A band is already booked for this event."
+
+
+    return HttpResponse(response)

@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+{% load staticfiles %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="{% static "js/bandit-jquery.js" %}"></script>
+
 <html>
     <head>
         <title>BANDit</title>
@@ -33,7 +39,8 @@
                     <p>Date of request: {{ gig_request.request_date }}</p>
                 <!-- Otherwise, show a button/link to make a request. -->
                 {% else %}
-                    <a href="">Make request</a>
+                    <button id="make_gig_request" data-evid="{{ event.id }}" data-bandid="{{ band.id }}" class="btn btn-primary" type="button">Make Request</button>
+                    <strong id="gig_request_sent"></strong>
                 {% endif %}
             {% endif %}
 
