@@ -74,7 +74,6 @@ def register(request):
                   {'user_form': user_form, 'profile_form': profile_form, 'registered': registered} )
 
 def user_login(request):
-    
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
@@ -141,11 +140,31 @@ def event(request, event_name_slug):
         venue = event.venue
         context_dict['venue'] = venue
 
-        # Retrieve the requests for this event.
-        requests = Request.objects.filter(event=event)
-        context_dict['requests'] = requests
+        # Show user-specific content...
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            context_dict['username'] = request.user.username
 
-    except Event.DoesNotExist:
+            # If the user is the venue-owner of the event, show the list of requests
+            if venue.profile == profile:
+                # Retrieve the requests for this event.
+                requests = Request.objects.filter(event=event)
+                context_dict['requests'] = requests
+
+            # If the user is a band...
+            # ... and hasn't requested to play this gig, show a 'Request' button.
+            # ... and has requested to play this gig, show the date of request.
+            try:
+                band = Band.objects.get(profile=profile)
+                context_dict['band'] = band
+            except Band.DoesNotExist:
+                band = None
+
+            if not band == None:
+                gig_request = Request.objects.get(event=event, band=band)
+                context_dict['gig_request'] = gig_request
+
+    except (Event.DoesNotExist, Profile.DoesNotExist, Request.DoesNotExist):
         pass
 
     return render(request, 'bandit/event.html', context_dict)
@@ -197,22 +216,37 @@ def request(request, event_name_slug, profile_name_slug):
         # Can we find an event name slug with the given name?
         # If we can't, the .get() method raises a DoesNotExist exception.
         event = Event.objects.get(slug=event_name_slug)
-        context_dict['event'] = event
-        context_dict['event_name'] = event.name
 
-        # Can we find a profile name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=profile_name_slug)
+        # Is the user authenticated?
+        # If not, contect_dict will remain empty.
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            context_dict['username'] = request.user.username
 
-        # Does this profile correspond to a band?
-        # If not, the .get() method raises a DoesNotExist exception.
-        band = Band.objects.get(profile=profile)
-        context_dict['band'] = band
+            # Is the user the owner of the event?
+            # If not, access to this information is denied!
+            if event.venue.profile == profile:
+                context_dict['event'] = event
+                context_dict['event_name'] = event.name
 
-        # Has this band made a request for this event?
-        # If not, the .get() method raises a DoesNotExist exception.
-        gig_request =  Request.objects.get(event=event, band=band)
-        context_dict['gig_request'] = gig_request
+                # Can we find a profile name slug with the given name?
+                # If we can't, the .get() method raises a DoesNotExist exception.
+                profile = Profile.objects.get(slug=profile_name_slug)
+
+                # Does this profile correspond to a band?
+                # If not, the .get() method raises a DoesNotExist exception.
+                band = Band.objects.get(profile=profile)
+                context_dict['band'] = band
+
+                # Has this band made a request for this event?
+                # If not, the .get() method raises a DoesNotExist exception.
+                gig_request =  Request.objects.get(event=event, band=band)
+                context_dict['gig_request'] = gig_request
+
+                # Has the owner accepted a band for this event?
+                # If not, an 'Accept' button should be shown...
+                if event.band:
+                    context_dict['accepted_band'] = event.band
 
     except (Event.DoesNotExist, Band.DoesNotExist, Profile.DoesNotExist, Request.DoesNotExist):
         pass
