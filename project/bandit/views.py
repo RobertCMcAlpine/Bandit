@@ -299,11 +299,14 @@ def add_event(request, profile_name_slug):
                     # Have we been provided with a valid form?
                     if form.is_valid():
                         # Save the new event to the database.
-                        form.save(commit=True)
-
-                        # Now call the index() view.
-                        # The user will be shown the homepage.
-                        return index(request)
+                        new_event = form.save(commit=False)
+                        try:
+                            existing_event = Event.objects.get(name=new_event.name, venue=venue, date=new_event.date)
+                        except Exception, e:
+                            new_event.venue = venue
+                            new_event.save()
+                        # probably better to use a redirect here (?)
+                        return event(request, new_event.slug)
                     else:
                         # The supplied form contained errors - just print them to the terminal.
                         print form.errors
