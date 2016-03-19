@@ -10,12 +10,26 @@
             {% if profile.profile_picture %}
                 <img src="{{ profile.profile_picture.url }}" alt="profile_picture">
             {% endif %}
+            <h2>Details</h2>
             Description: {{ profile.description }} <br />
             City: {{ profile.city }} <br />
             Phone number: {{ profile.phone_number }} <br />
             Website: {{ profile.website }} <br />
             Address: {{ venue.address }} <br />
             Post Code: {{ venue.post_code }} <br />
+
+            {% if events %}
+            <h2>Events</h2>
+                <ul>
+                {% for event in events %}
+                    <li><a href="">{{ event.name }} - {{ event.date }}, {{ event.time }}</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if accessed_by_owner %}
+                <a href="add_event/">Add Event</a>
+            {% endif %}
 
         {% else %}
             The specified venue {{ profile_name }} does not exist!

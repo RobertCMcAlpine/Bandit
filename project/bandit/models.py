@@ -82,7 +82,7 @@ class Event(models.Model):
 # start time? end time? decide later
     start_time = models.TimeField()
     end_time = models.TimeField(null=True, blank=True)
-    reward = models.CharField(max_length=512)
+    reward = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
     slug = models.SlugField()
 

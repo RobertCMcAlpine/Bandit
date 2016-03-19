@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from bandit.forms import UserForm, UserProfileForm
+from bandit.forms import UserForm, UserProfileForm, EventForm
 from bandit.models import Profile, Band, Venue, Event, Request, Image
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 
 def index(request):
@@ -204,6 +205,19 @@ def venue(request, profile_name_slug):
         venue = Venue.objects.get(profile=profile)
         context_dict['venue'] = venue
 
+        # Retrieve all the events of the specified venue.
+        events = Event.objects.filter(venue=venue)
+        context_dict['events'] = events
+
+        # Is the user authenticated?
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+
+            # Is the user the owner of the profile?
+            # If so, show more content...
+            if venue.profile == profile:
+                context_dict['accessed_by_owner'] = True
+
     except (Profile.DoesNotExist, Venue.DoesNotExist):
         pass
 
@@ -247,8 +261,64 @@ def request(request, event_name_slug, profile_name_slug):
                 # If not, an 'Accept' button should be shown...
                 if event.band:
                     context_dict['accepted_band'] = event.band
+            else:
+                # The user is not the owner of the specified event.
+                # We return a 403 (Forbidden)
+                raise PermissionDenied
 
     except (Event.DoesNotExist, Band.DoesNotExist, Profile.DoesNotExist, Request.DoesNotExist):
         pass
 
     return render(request, 'bandit/request.html', context_dict)
+
+
+def add_event(request, profile_name_slug):
+    context_dict = {}
+
+    try:
+        # Can we find a profile name slug with the given name?
+        # If we can't, the .get() method raises a DoesNotExist exception.
+        profile = Profile.objects.get(slug=profile_name_slug)
+        
+        # Does this profile correspond to a venue?
+        # If not, the .get() method raises a DoesNotExist exception.
+        venue = Venue.objects.get(profile=profile)
+
+        # Is the user authenticated?
+        # If not, contect_dict will remain empty.
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            context_dict['venue_profile_name_slug'] = profile_name_slug
+            # Is the user the the owner of this venue?
+            # If so, show him the form!
+            if venue.profile == profile:
+                # A HTTP POST?
+                if request.method == 'POST':
+                    form = EventForm(request.POST)
+
+                    # Have we been provided with a valid form?
+                    if form.is_valid():
+                        # Save the new event to the database.
+                        form.save(commit=True)
+
+                        # Now call the index() view.
+                        # The user will be shown the homepage.
+                        return index(request)
+                    else:
+                        # The supplied form contained errors - just print them to the terminal.
+                        print form.errors
+                else:
+                    # If the request was not a POST, display the form to enter details.
+                    form = EventForm()
+
+                # Bad form (or form details), no form supplied...
+                # Render the form with error messages (if any).
+                context_dict['form'] = form
+                return render(request, 'bandit/add_event.html', context_dict)
+
+    except (Profile.DoesNotExist, Venue.DoesNotExist):
+        pass
+
+    # User is not authorised to add an event for the specified venue.
+    # We return 403 (Forbidden)
+    raise PermissionDenied
