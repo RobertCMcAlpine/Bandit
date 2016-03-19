@@ -37,6 +37,9 @@ def populate():
 	laura_event = add_event(laura_venue, "-", "Friday Night Live", date(2016,3,25),
 		time(19,30,00), time(22,00,00), "Free beer", "Beer and live music.")
 
+	# Adding a request from Leif's band to play in the Maths event
+	add_request(maths_event, leif_band)
+
 	# Adding a request from Leif's band to play in Laura's event
 	add_request(laura_event, leif_band)
 
