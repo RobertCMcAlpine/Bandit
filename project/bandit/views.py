@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail
+from datetime import date,time
 
 
 def index(request):
@@ -322,7 +324,6 @@ def add_event(request, venue_profile_name_slug):
                         except Exception, e:
                             new_event.venue = venue
                             new_event.save()
-                        # probably better to use a redirect here (?)
                         return event(request, venue.profile.slug, new_event.slug)
                     else:
                         # The supplied form contained errors - just print them to the terminal.
@@ -410,3 +411,21 @@ def get_venue_notifications(request):
     except (Profile.DoesNotExist, Venue.DoesNotExist):
         return None
 
+def events(request):
+    context_dict = {}
+    today = date.today()
+    event_list = Event.objects.filter(date__gte=today).order_by('date')
+    context_dict['event_list'] = event_list
+    return render(request, 'bandit/events.html', context_dict)
+
+def bands(request):
+    context_dict = {}
+    band_list = Band.objects.order_by('-profile__name')
+    context_dict['band_list'] = band_list
+    return render(request, 'bandit/bands.html', context_dict)
+
+def venues(request):
+    context_dict = {}
+    venue_list = Venue.objects.order_by('-profile__name')
+    context_dict['venue_list'] = venue_list
+    return render(request, 'bandit/venues.html', context_dict)

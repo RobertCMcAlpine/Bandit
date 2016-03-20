@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BANDit</title>
+    </head>
+
+    <body>
+        {% if band_list %}
+            <h1>Bands</h1>
+            <ul>
+                {% for band in band_list %}
+                    <li><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            No bands.
+        {% endif %}
+    </body>
+</html>

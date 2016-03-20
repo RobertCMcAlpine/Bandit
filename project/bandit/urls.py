@@ -14,4 +14,7 @@ urlpatterns = patterns('',
                url(r'^venue/(?P<venue_profile_name_slug>[\w\-]+)/event/(?P<event_date_slug>[\d\-]+)/request/(?P<band_profile_name_slug>[\w\-]+)/$', views.request, name='request'),
                url(r'^make_gig_request/$', views.make_gig_request, name='make_gig_request'),
                url(r'^accept_gig_request/$', views.accept_gig_request, name='accept_gig_request'),
+               url(r'^events/$', views.events, name='events'),
+               url(r'^bands/$', views.bands, name='bands'),
+               url(r'^venues/$', views.venues, name='venues'),
                )
