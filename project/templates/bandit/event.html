@@ -1,31 +1,24 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 
 {% load staticfiles %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="{% static "js/bandit-jquery.js" %}"></script>
 
-<html>
-    <head>
-        <title>BANDit</title>
-    </head>
-=======
 <html lang="en">
 <head>
-<title>BandIt</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-<link rel="stylesheet" href="css/bootstrap-theme.css" type="text/css" />
-<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css" />
-<link rel="stylesheet" href="css/style.css" type="text/css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/slider.js"></script>
+	<title>BandIt</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap-theme.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/style.css" type="text/css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/slider.js"></script>
 </head>
->>>>>>> b63bc9830b879e2b28cbdc57288dd3b8f14971a9
 
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -69,7 +62,6 @@
 </ul>
 {% endif %}
 
-<<<<<<< HEAD
             <!-- If the user is a band... -->
             {% if band %}
                 <!-- ... and has made a request for this event, show the request's date -->
@@ -81,23 +73,6 @@
                     <strong id="gig_request_sent"></strong>
                 {% endif %}
             {% endif %}
-=======
->>>>>>> b63bc9830b879e2b28cbdc57288dd3b8f14971a9
-
-<!-- If the user is a band... -->
-{% if band %}
-<!-- ... and has made a request for this event, show the request's date -->
-				{% if gig_request %}
-					<p>Date of request: {{ gig_request.request_date }}</p>
-				<!-- Otherwise, show a button/link to make a request. -->
-				{% else %}
-					<a href="">Make request</a>
-				{% endif %}
-			{% endif %}
-
-		{% else %}
-			The specified event {{ event_name }} does not exist!
-		{% endif %}
 		</div>
 	<div class="col-md-6"> 
 	<img class="profile-pic" src="../../static/images/profile.jpg" alt="profile image here maybe" />
