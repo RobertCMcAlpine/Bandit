@@ -37,8 +37,7 @@
 </div>
 </nav>
 
-
-<div class="container-fluid">
+<div class="container-fluid card">
 <div class="row">
 <div class="col-md-12">
 {% if event %}
@@ -46,18 +45,20 @@
 <h2>Owner: <a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue }}</a></h2>
 </div>
 <!-- If a band has been allocated to this event, show its name. -->
-<div class="col-md-6">   
+</div>
+<div class="row">
+<div class="col-md-12">   
 {% if event.band %}
 <h3>Band: <a href="/bandit/band/{{ event.band.profile.slug }}">{{ event.band }}</a></h3>
 {% else %}
-<h4>Band: Not allocated.</h4>
+<h3>Band: Not allocated.</h4>
 {% endif %}
 <p>User: {{ username }} </p>
 
             <!-- If the user is the venue-owner of the event, show list of requests. -->
             {% if requests %}
 			<div class="row">
-				<ul class="list-group">
+				<ul class="list-group requests">
 					{% for request in requests %}
                     <li class="list-group-item"><a href="request/{{ request.band.profile.slug }}">{{ request.band }} : {{ request.request_date }}</a></li>
                     {% endfor %}
@@ -69,22 +70,23 @@
             {% if band %}
                 <!-- ... and has made a request for this event, show the request's date -->
                 {% if gig_request %}
+				<div class="row">
                     <p>Date of request: {{ gig_request.request_date }}</p>
-                <!-- Otherwise, show a button/link to make a request. -->
-                {% else %}
+					 {% else %}
                     <a href="">Make request</a>
-                {% endif %}
+					{% endif %}
+				</div>
+                <!-- Otherwise, show a button/link to make a request. -->
+               
             {% endif %}
 
 {
 		</div>
-	<div class="col-md-6"> 
-	<img class="profile-pic" src="../../static/images/profile.jpg" alt="profile image here maybe" />
-	</div>
+	
 </div>
 </div>
 % else %}
-The specified event {{ event_name }} does not exist!
+<h1>The specified event {{ event_name }} does not exist!</h1>
 {% endif %}
 <nav class="navbar navbar-default navbar-static-bottom"> 
   <div class="container-fluid">

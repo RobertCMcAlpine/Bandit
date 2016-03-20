@@ -17,6 +17,7 @@ top:10px;
 .nav
 {
 float:right;
+min-width:100px;
 }
 .navbar-brand
 {
@@ -104,4 +105,20 @@ max-width:400px;
 margin-left:20%;
 margin-right:auto;
 margin-top:25px;
+}
+
+.requests li
+{
+text-align:center;
+}
+.requests
+{
+min-height:10px;
+overflow:auto;
+}
+.card
+{
+width:70%;
+margin-left:auto;
+margin-right:auto;
 }
