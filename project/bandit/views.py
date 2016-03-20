@@ -271,6 +271,8 @@ def request(request, venue_profile_name_slug, event_date_slug, band_profile_name
                 # If not, the .get() method raises a DoesNotExist exception.
                 gig_request =  Request.objects.get(event=event, band=band)
                 context_dict['gig_request'] = gig_request
+                gig_request.seen = True
+                gig_request.save()
 
                 # Has the owner accepted a band for this event?
                 # If not, an 'Accept' button should be shown...
@@ -390,5 +392,21 @@ def accept_gig_request(request):
             else:
                 response = "A band is already booked for this event."
 
-
     return HttpResponse(response)
+
+# Should be called by all the other views!
+def get_venue_notifications(request):
+    try:
+        # Is the user authenticated?
+        if request.user.is_authenticated():
+            # Is the user a venue?
+            profile = Profile.objects.get(user=request.user)
+            venue = Venue.objects.get(profile=profile)
+
+            new_requests = Request.objects.filter(venue=venue, seen=False)
+
+            return new_requests
+
+    except (Profile.DoesNotExist, Venue.DoesNotExist):
+        return None
+
