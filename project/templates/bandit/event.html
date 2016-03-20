@@ -26,7 +26,7 @@
 <div class="col-md-12 navig">
 <a class="navbar-brand" href="#">Band<b>IT</b></a>
 <ul class="nav nav-pills">
-<li role="presentation" class="active"><a href="#">Home</a></li>
+<li role="presentation"><a href="#">Home</a></li>
 <li role="presentation"><a href="#">Profile</a></li>
 <li role="presentation"><a href="#">Messages</a></li>
 <li role="presentation"><a href="#">Events</a></li>
@@ -46,20 +46,23 @@
 <h2>Owner: <a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue }}</a></h2>
 </div>
 <!-- If a band has been allocated to this event, show its name. -->
-<div class="col-md-6">      {% if event.band %}
+<div class="col-md-6">   
+{% if event.band %}
 <h3>Band: <a href="/bandit/band/{{ event.band.profile.slug }}">{{ event.band }}</a></h3>
 {% else %}
-<h3>Band: Not allocated.</h3>
+<h4>Band: Not allocated.</h4>
 {% endif %}
 <p>User: {{ username }} </p>
 
             <!-- If the user is the venue-owner of the event, show list of requests. -->
             {% if requests %}
-                <ul>
-                    {% for request in requests %}
-                    <li><a href="request/{{ request.band.profile.slug }}">{{ request.band }}, {{ request.request_date }}</a></li>
+			<div class="row">
+				<ul class="list-group">
+					{% for request in requests %}
+                    <li class="list-group-item"><a href="request/{{ request.band.profile.slug }}">{{ request.band }} : {{ request.request_date }}</a></li>
                     {% endfor %}
                 </ul>
+			</div>
             {% endif %}
 
             <!-- If the user is a band... -->
@@ -73,15 +76,16 @@
                 {% endif %}
             {% endif %}
 
-        {% else %}
-            The specified event {{ event_name }} does not exist!
-        {% endif %}
+{
 		</div>
 	<div class="col-md-6"> 
 	<img class="profile-pic" src="../../static/images/profile.jpg" alt="profile image here maybe" />
 	</div>
 </div>
 </div>
+% else %}
+The specified event {{ event_name }} does not exist!
+{% endif %}
 <nav class="navbar navbar-default navbar-static-bottom"> 
   <div class="container-fluid">
   <div class="row">
