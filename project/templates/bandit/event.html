@@ -53,14 +53,14 @@
 {% endif %}
 <p>User: {{ username }} </p>
 
-<!-- If the user is the venue-owner of the event, show list of requests. -->
-{% if requests %}
-<ul>
-{% for request in requests %}
-<li><a href="request/{{ request.band.profile.slug }}">{{ request.band }}, {{ request.request_date }}</a></li>
-{% endfor %}
-</ul>
-{% endif %}
+            <!-- If the user is the venue-owner of the event, show list of requests. -->
+            {% if requests %}
+                <ul>
+                    {% for request in requests %}
+                    <li><a href="request/{{ request.band.profile.slug }}">{{ request.band }}, {{ request.request_date }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
             <!-- If the user is a band... -->
             {% if band %}
@@ -69,10 +69,13 @@
                     <p>Date of request: {{ gig_request.request_date }}</p>
                 <!-- Otherwise, show a button/link to make a request. -->
                 {% else %}
-                    <button id="make_gig_request" data-evid="{{ event.id }}" data-bandid="{{ band.id }}" class="btn btn-primary" type="button">Make Request</button>
-                    <strong id="gig_request_sent"></strong>
+                    <a href="">Make request</a>
                 {% endif %}
             {% endif %}
+
+        {% else %}
+            The specified event {{ event_name }} does not exist!
+        {% endif %}
 		</div>
 	<div class="col-md-6"> 
 	<img class="profile-pic" src="../../static/images/profile.jpg" alt="profile image here maybe" />
