@@ -33,7 +33,7 @@ color:#337ab7;
 .navbar-fixed-top
 {
 padding-top:10px;
-background:rgba(255, 255, 255,0.4) ;
+background:rgba(255, 255, 255,0.8) ;
 box-shadow:none;
 border:none;
 border:solid 1px #ecf0f1;
@@ -42,9 +42,22 @@ min-height:80px;
 
 .navbar-fixed-top:hover
 {
-background:rgba(255, 255, 255,0.9);
+background:rgba(255, 255, 255,1);
 }
 
+.navbar-static-bottom
+{
+margin-bottom:0px;
+top:80px;
+height:30px;
+background:#2980b9;
+border:none;
+color:#fff;
+}
+.navbar-default .navbar-right
+{
+color:#fff;
+}
 .row
 {
 width:80%;
@@ -77,4 +90,17 @@ min-height:200px;
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   position: relative;
   min-height: 1px;
+  
+}
+
+.profile-pic
+{
+width:60%;
+min-width:150px;
+height:auto;
+min-height:200px;
+max-height:600px;
+max-width:400px;
+margin-left:20%;
+margin-right:auto;
 }

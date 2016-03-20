@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 
 {% load staticfiles %}
 
@@ -9,29 +10,66 @@
     <head>
         <title>BANDit</title>
     </head>
+=======
+<html lang="en">
+<head>
+<title>BandIt</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="css/bootstrap-theme.css" type="text/css" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/slider.js"></script>
+</head>
+>>>>>>> b63bc9830b879e2b28cbdc57288dd3b8f14971a9
 
-    <body>
-        {% if event %}
-            <h1>{{ event_name }}</h1>
-            <h3>Owner: <a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue }}</a></h3>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12 navig">
+<a class="navbar-brand" href="#">Band<b>IT</b></a>
+<ul class="nav nav-pills">
+<li role="presentation" class="active"><a href="#">Home</a></li>
+<li role="presentation"><a href="#">Profile</a></li>
+<li role="presentation"><a href="#">Messages</a></li>
+<li role="presentation"><a href="#">Events</a></li>
+<li role="presentation"><a href="#">Bands</a></li>
+</ul>
+</div>
+</div>
+</div>
+</nav>
 
-            <!-- If a band has been allocated to this event, show its name. -->
-            {% if event.band %}
-                <h3>Band: <a href="/bandit/band/{{ event.band.profile.slug }}">{{ event.band }}</a></h3>
-            {% else %}
-                <h3>Band: Not allocated.</h3>
-            {% endif %}
-            <p>User: {{ username }} </p>
+{% if event %}
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12">
+<h1>{{ event_name }}</h1>
+<h2>Owner: <a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue }}</a></h2>
+</div>
+<!-- If a band has been allocated to this event, show its name. -->
+<div class="col-md-6">      {% if event.band %}
+<h3>Band: <a href="/bandit/band/{{ event.band.profile.slug }}">{{ event.band }}</a></h3>
+{% else %}
+<h3>Band: Not allocated.</h3>
+{% endif %}
+<p>User: {{ username }} </p>
 
-            <!-- If the user is the venue-owner of the event, show list of requests. -->
-            {% if requests %}
-                <ul>
-                    {% for request in requests %}
-                    <li><a href="request/{{ request.band.profile.slug }}">{{ request.band }}, {{ request.request_date }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+<!-- If the user is the venue-owner of the event, show list of requests. -->
+{% if requests %}
+<ul>
+{% for request in requests %}
+<li><a href="request/{{ request.band.profile.slug }}">{{ request.band }}, {{ request.request_date }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
 
+<<<<<<< HEAD
             <!-- If the user is a band... -->
             {% if band %}
                 <!-- ... and has made a request for this event, show the request's date -->
@@ -43,9 +81,35 @@
                     <strong id="gig_request_sent"></strong>
                 {% endif %}
             {% endif %}
+=======
+>>>>>>> b63bc9830b879e2b28cbdc57288dd3b8f14971a9
 
-        {% else %}
-            The specified event {{ event_name }} does not exist!
-        {% endif %}
-    </body>
+<!-- If the user is a band... -->
+{% if band %}
+<!-- ... and has made a request for this event, show the request's date -->
+				{% if gig_request %}
+					<p>Date of request: {{ gig_request.request_date }}</p>
+				<!-- Otherwise, show a button/link to make a request. -->
+				{% else %}
+					<a href="">Make request</a>
+				{% endif %}
+			{% endif %}
+
+		{% else %}
+			The specified event {{ event_name }} does not exist!
+		{% endif %}
+		</div>
+	<div class="col-md-6"> 
+	<img class="profile-pic" src="../../static/images/profile.jpg" alt="profile image here maybe" />
+	</div>
+</div>
+</div>
+<nav class="navbar navbar-default navbar-static-bottom"> 
+  <div class="container-fluid">
+  <div class="row">
+	<p class="navbar-text navbar-right">Copyright <b>Team Gig-A-Bit</b></p>
+ </div>
+  </div>
+	</nav> 
+	</body>
 </html>
