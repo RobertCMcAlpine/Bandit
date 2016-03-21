@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from bandit.forms import UserForm, UserProfileForm, EventForm
+from bandit.forms import UserForm, ProfileForm, EventForm, BandForm, EditProfileForm
 from bandit.models import Profile, Band, Venue, Event, Request, Image
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -28,9 +28,9 @@ def register(request):
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and UserProfileForm.
+        # Note that we make use of both UserForm and ProfileForm.
         user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
+        profile_form = ProfileForm(data=request.POST)
         
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid():
@@ -42,18 +42,18 @@ def register(request):
             user.set_password(user.password)
             user.save()
             
-            # Now sort out the UserProfile instance.
+            # Now sort out the Profile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
             # This delays saving the model until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
             
             # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the UserProfile model.
+            # If so, we need to get it from the input form and put it in the Profile model.
             #if 'picture' in request.FILES:
             #    profile.picture = request.FILES['picture']
         
-            # Now we save the UserProfile model instance.
+            # Now we save the Profile model instance.
             profile.save()
     
             # Update our variable to tell the template registration was successful.
@@ -69,7 +69,7 @@ def register(request):
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        profile_form = UserProfileForm()
+        profile_form = ProfileForm()
 
     # Render the template depending on the context.
     return render(request,
@@ -116,10 +116,6 @@ def user_login(request):
         # blank dictionary object...
         return render(request, 'bandit/login.html', {})
 
-@login_required
-def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
-
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
 def user_logout(request):
@@ -144,6 +140,15 @@ def band(request, band_profile_name_slug):
         # If not, the .get() method raises a DoesNotExist exception.
         band = Band.objects.get(profile=profile)
         context_dict['band'] = band
+
+        # Is the user authenticated?
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+
+            # Is the user the owner of the profile?
+            # If so, show 'Edit Profile' option
+            if band.profile == profile:
+                context_dict['accessed_by_owner'] = True
 
     except (Profile.DoesNotExist, Band.DoesNotExist):
         pass
@@ -174,7 +179,7 @@ def venue(request, venue_profile_name_slug):
             profile = Profile.objects.get(user=request.user)
 
             # Is the user the owner of the profile?
-            # If so, show more content...
+            # If so, show 'Add Event' option
             if venue.profile == profile:
                 context_dict['accessed_by_owner'] = True
 
@@ -187,13 +192,9 @@ def event(request, venue_profile_name_slug, event_date_slug):
     context_dict = {}
 
     try:
-        # Can we find a profile name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=venue_profile_name_slug)
-        
-        # Does this profile correspond to a venue?
+        # Does this venue_profile_name_slug correspond to a venue?
         # If not, the .get() method raises a DoesNotExist exception.
-        venue = Venue.objects.get(profile=profile)
+        venue = Venue.objects.get(profile__slug=venue_profile_name_slug)
         context_dict['venue'] = venue
 
         # Can we find an event of that venue for that date?
@@ -231,17 +232,14 @@ def event(request, venue_profile_name_slug, event_date_slug):
 
     return render(request, 'bandit/event.html', context_dict)
 
+@login_required
 def request(request, venue_profile_name_slug, event_date_slug, band_profile_name_slug):
     context_dict = {}
 
     try:
-        # Can we find a profile name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=venue_profile_name_slug)
-        
-        # Does this profile correspond to a venue?
+        # Does this venue_profile_name_slug correspond to a venue?
         # If not, the .get() method raises a DoesNotExist exception.
-        venue = Venue.objects.get(profile=profile)
+        venue = Venue.objects.get(profile__slug=venue_profile_name_slug)
         context_dict['venue'] = venue
 
         # Can we find an event of that venue for that date?
@@ -295,13 +293,9 @@ def add_event(request, venue_profile_name_slug):
     context_dict = {}
 
     try:
-        # Can we find a profile name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=venue_profile_name_slug)
-        
-        # Does this profile correspond to a venue?
+        # Does this venue_profile_name_slug correspond to a venue?
         # If not, the .get() method raises a DoesNotExist exception.
-        venue = Venue.objects.get(profile=profile)
+        venue = Venue.objects.get(profile__slug=venue_profile_name_slug)
 
         # Is the user authenticated?
         # If not, contect_dict will remain empty.
@@ -368,6 +362,52 @@ def make_gig_request(request):
                 response = "Request sent."
 
     return HttpResponse(response)
+
+@login_required
+def edit_band_profile(request, band_profile_name_slug):
+    context_dict = {}
+
+    try:
+        # Does this band_profile_name_slug correspond to a band?
+        # If not, the .get() method raises a DoesNotExist exception.
+        existing_band = Band.objects.get(profile__slug=band_profile_name_slug)
+        context_dict['band_profile_name_slug'] = band_profile_name_slug
+
+        # Is the user the owner of this profile?
+        if existing_band.profile.user == request.user:
+            # A HTTP POST?
+            if request.method == 'POST':
+                profile_form = EditProfileForm(request.POST, request.FILES, instance=existing_band.profile)
+                band_form = BandForm(request.POST, instance=existing_band)
+
+                # Have we been provided with valid forms?
+                if profile_form.is_valid() and band_form.is_valid():
+                    # Save the new category to the database.
+                    profile_form.save(commit=True)
+                    band_form.save(commit=True)
+
+                    # Now call the index() view.
+                    # The user will be shown the homepage.
+                    return band(request, band_profile_name_slug)
+                else:
+                    # The supplied form contained errors - just print them to the terminal.
+                    print profile_form.errors, band_form.errors
+            else:
+                # If the request was not a POST, display the form to enter details.
+                profile_form = EditProfileForm(instance=existing_band.profile)
+                band_form = BandForm(instance=existing_band)
+                context_dict['profile_form'] = profile_form
+                context_dict['band_form'] = band_form
+
+            # Bad form (or form details), no form supplied...
+            # Render the form with error messages (if any).
+            return render(request, 'bandit/edit_band_profile.html', context_dict)
+    except (Band.DoesNotExist):
+        pass
+
+    # User is not authorised to edit this profile.
+    # We return 403 (Forbidden)
+    raise PermissionDenied
 
 
 @login_required

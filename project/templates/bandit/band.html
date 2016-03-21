@@ -33,6 +33,10 @@
             Members: {{ band.number_of_members }} <br />
             Genre: {{ band.genre }} <br />
 
+            {% if accessed_by_owner %}
+                <a href="/bandit/band/{{ profile.slug }}/edit">Edit Profile</a>
+            {% endif %}
+
         {% else %}
             The specified band {{ profile_name }} does not exist!
         {% endif %}

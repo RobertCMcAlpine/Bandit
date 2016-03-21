@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from bandit.models import Profile, Event
+from bandit.models import Profile, Event, Band, Venue, get_image_path
 from django.forms.extras.widgets import SelectDateWidget
 
 
@@ -11,10 +11,15 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password')
 
-class UserProfileForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('name', 'city', 'profile_type')
+        fields = ('profile_type', 'name', 'profile_picture', 'city', 'phone_number', 'description')
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('name', 'profile_picture', 'city', 'phone_number', 'description')
 
 class EventForm(forms.ModelForm):
     name = forms.CharField(max_length=128, help_text="Please enter the name of the event:")
@@ -28,3 +33,15 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ('name', 'date', 'start_time', 'end_time', 'reward', 'description')
+
+
+
+class BandForm(forms.ModelForm):
+    class Meta():
+        model = Band
+        fields = ('number_of_members', 'genre')
+
+class VenueForm():
+    class Meta():
+        model = Venue
+        fields = ('address', 'post_code')
