@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from keys import SECRET_KEY, EMAIL_PASS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
@@ -24,7 +25,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # the local directory in which use
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f2*1uciaj16#zu@@!4imi)qun83@n54nnr-3(nl-zbqvjf9ij%'
+# SECRET_KEY imported from keys.py!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -101,3 +102,13 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     TEMPLATE_PATH,
 )
+
+# EMAIL
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'bandit.app.contact@gmail.com'
+DEFAULT_FROM_EMAIL = 'bandit.app.contact@gmail.com'
+SERVER_EMAIL = 'bandit.app.contact@gmail.com'
+EMAIL_HOST_PASSWORD = EMAIL_PASS
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
