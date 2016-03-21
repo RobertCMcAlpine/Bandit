@@ -21,24 +21,34 @@
 </head>
 
     <body>
+		<div class="container-fluid">
         {% if profile and band %}
+			<div class="row">
             <h1>{{ profile_name }}</h1>
-            {% if profile.profile_picture %}
-                <img src="{{ profile.profile_picture.url }}" alt="profile_picture" /> 
+            
+			</div>
             {% endif %}
-            Description: {{ profile.description }} <br />
-            City: {{ profile.city }} <br />
-            Phone number: {{ profile.phone_number }} <br />
-            Website: {{ profile.website }} <br />
-            Members: {{ band.number_of_members }} <br />
-            Genre: {{ band.genre }} <br />
-
-            {% if accessed_by_owner %}
-                <a href="/bandit/band/{{ profile.slug }}/edit">Edit Profile</a>
+			<div class="row band-profile">
+			<div class="col-md-6">
+            <p>Description: {{ profile.description }}</p>
+            <p>City: {{ profile.city }}</p>
+            <p>Phone number: {{ profile.phone_number }}</p>
+            <p>Website: {{ profile.website }} </p>
+            <p>Members: {{ band.number_of_members }} </p>
+            <p>Genre: {{ band.genre }} </p>
+			 {% if accessed_by_owner %}
+               <p> <a href="/bandit/band/{{ profile.slug }}/edit">Edit Profile</a> </p>
             {% endif %}
-
+			</div>
+           
+			<div class="col-md-6">
+			{% if profile.profile_picture %}
+                <img class="profile-pic" src="{{ profile.profile_picture.url }}" alt="profile_picture" /> 
+			</div>
+			</div>
+		</div>
         {% else %}
-            The specified band {{ profile_name }} does not exist!
+           <div class="alert alert-danger" role="alert"><h1> The specified band {{ profile_name }} does not exist!</h1></div>
         {% endif %}
     </body>
 </html>
