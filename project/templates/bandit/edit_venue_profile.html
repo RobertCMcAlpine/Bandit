@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BANDit</title>
+    </head>
+
+    <body>
+
+        {% if venue_form and profile_form %}
+            <h1>Edit Profile</h1>
+
+            <form id="edit_venue_profile_form" enctype="multipart/form-data" method="post" action="/bandit/venue/{{ venue_profile_name_slug }}/edit/">
+
+                {% csrf_token %}
+                
+                {{ profile_form.as_p }}
+                {{ venue_form.as_p }}
+
+                <input type="submit" name="submit" value="Save" />
+            </form>
+        {% else %}
+            <h1>Access Denied.</h1>
+        {% endif %}
+    </body>
+
+</html>

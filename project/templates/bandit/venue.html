@@ -22,13 +22,14 @@
             <h2>Events</h2>
                 <ul>
                 {% for event in events %}
-                    <li><a href="event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.time }}</a></li>
+                    <li><a href="/bandit/venue/{{ profile.slug }}/event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.start_time }}</a></li>
                 {% endfor %}
             </ul>
             {% endif %}
 
             {% if accessed_by_owner %}
-                <a href="add_event/">Add Event</a>
+                <a href="/bandit/venue/{{ profile.slug }}/add_event/">Add Event</a> <br />
+                <a href="/bandit/venue/{{ profile.slug }}/edit/">Edit Profile</a>
             {% endif %}
 
         {% else %}

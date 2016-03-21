@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from bandit.forms import UserForm, ProfileForm, EventForm, BandForm, EditProfileForm
+from bandit.forms import UserForm, ProfileForm, EventForm, BandForm, VenueForm, EditProfileForm
 from bandit.models import Profile, Band, Venue, Event, Request, Image
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -402,6 +402,52 @@ def edit_band_profile(request, band_profile_name_slug):
             # Bad form (or form details), no form supplied...
             # Render the form with error messages (if any).
             return render(request, 'bandit/edit_band_profile.html', context_dict)
+    except (Band.DoesNotExist):
+        pass
+
+    # User is not authorised to edit this profile.
+    # We return 403 (Forbidden)
+    raise PermissionDenied
+
+@login_required
+def edit_venue_profile(request, venue_profile_name_slug):
+    context_dict = {}
+
+    try:
+        # Does this venue_profile_name_slug correspond to a venue?
+        # If not, the .get() method raises a DoesNotExist exception.
+        existing_venue = Venue.objects.get(profile__slug=venue_profile_name_slug)
+        context_dict['venue_profile_name_slug'] = venue_profile_name_slug
+
+        # Is the user the owner of this profile?
+        if existing_venue.profile.user == request.user:
+            # A HTTP POST?
+            if request.method == 'POST':
+                profile_form = EditProfileForm(request.POST, request.FILES, instance=existing_venue.profile)
+                venue_form = VenueForm(request.POST, instance=existing_venue)
+
+                # Have we been provided with valid forms?
+                if profile_form.is_valid() and venue_form.is_valid():
+                    # Save the new category to the database.
+                    profile_form.save(commit=True)
+                    venue_form.save(commit=True)
+
+                    # Now call the index() view.
+                    # The user will be shown the homepage.
+                    return venue(request, venue_profile_name_slug)
+                else:
+                    # The supplied form contained errors - just print them to the terminal.
+                    print profile_form.errors, venue_form.errors
+            else:
+                # If the request was not a POST, display the form to enter details.
+                profile_form = EditProfileForm(instance=existing_venue.profile)
+                venue_form = VenueForm(instance=existing_venue)
+                context_dict['profile_form'] = profile_form
+                context_dict['venue_form'] = venue_form
+
+            # Bad form (or form details), no form supplied...
+            # Render the form with error messages (if any).
+            return render(request, 'bandit/edit_venue_profile.html', context_dict)
     except (Band.DoesNotExist):
         pass
 

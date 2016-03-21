@@ -41,7 +41,7 @@ class BandForm(forms.ModelForm):
         model = Band
         fields = ('number_of_members', 'genre')
 
-class VenueForm():
+class VenueForm(forms.ModelForm):
     class Meta():
         model = Venue
         fields = ('address', 'post_code')
