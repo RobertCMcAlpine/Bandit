@@ -1,32 +1,57 @@
 <!DOCTYPE html>
 <html>
     <head>
+	  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+ <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+ <link rel="stylesheet" href="css/bootstrap-theme.css" type="text/css" />
+ <link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css" />
+ <link rel="stylesheet" href="css/style.css" type="text/css"/>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/slider.js"></script>
         <title>Bandit - Register</title>
     </head>
     
     <body>
-        <h1>Register with Bandit</h1>
         
-        {% if registered %}
+        <div class="container-fluid card">
+		{% if registered %}
         Bandit says: <strong>thank you for registering!</strong>
-        <a href="/bandit/">Return to the homepage.</a><br />
+        <a href="/bandit/">Return to the homepage.</a>
         {% else %}
-        Bandit says: <strong>register here!</strong><br />
-        
-        <form id="user_form" method="post" action="/bandit/register/"
-            enctype="multipart/form-data">
-            
+		<div class="row">
+		<div class="col-md-12">
+		<h1>Register with Bandit</h1>
+		</div>
+		</div>
+        <div class="row">
+		<div class="col-md-6">
+        <form class=".control-label" id="user_form" method="post" action="/bandit/register/" enctype="multipart/form-data">
+                
             {% csrf_token %}
-            
+            <div class="form-group">
             <!-- Display each form. The as_p method wraps each element in a paragraph
              (<p>) element. This ensures each element appears on a new line,
              making everything look neater. -->
             {{ user_form.as_p }}
+			</div>
+			
+			<div class="form-group">
             {{ profile_form.as_p }}
-            
+            </div>
             <!-- Provide a button to click to submit the form. -->
-            <input type="submit" name="submit" value="Register" />
+            <input class="btn btn-primary" type="submit" name="submit" value="Register" />
         </form>
+		</div>
+		<div class="col-md-6">
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet aliquam augue. Pellentesque non eros erat. Etiam eget nulla sed arcu blandit convallis</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet aliquam augue. Pellentesque non eros erat. Etiam eget nulla sed arcu blandit convallis</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet aliquam augue. Pellentesque non eros erat. Etiam eget nulla sed arcu blandit convallis</p>
+		</div>
+		</div>
         {% endif %}
+		</div>
     </body>
 </html>
