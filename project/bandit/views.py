@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from datetime import date,time
+from django.core.mail import send_mail
 
 
 def index(request):
@@ -63,10 +64,10 @@ def register(request):
 
             # Redirect to 'Edit Profile' to fill in the rest of the details.
             if profile.profile_type == "B":
-                new_band = Band.objects.get_or_create(profile=profile)
+                new_band = Band.objects.get_or_create(profile=profile)[0]
                 return HttpResponseRedirect('/bandit/band/' + profile.slug + '/edit/')
             elif profile.profile_type == "V":
-                new_venue = Venue.objects.get_or_create(profile=profile)
+                new_venue = Venue.objects.get_or_create(profile=profile)[0]
                 return HttpResponseRedirect('/bandit/venue/' + profile.slug + '/edit/')
         
         # Invalid form or forms - mistakes or something else?
@@ -183,6 +184,9 @@ def venue(request, venue_profile_name_slug):
         # Retrieve all the events of the specified venue.
         events = Event.objects.filter(venue=venue)
         context_dict['events'] = events
+
+        # email test
+        #send_mail('Request accepted.', 'Your request has been accepted.', 'bandit.app.contact@gmail.com', ['thod.kal@gmail.com'])
 
         # Is the user authenticated?
         if request.user.is_authenticated():
@@ -369,6 +373,8 @@ def make_gig_request(request):
                 response = "This request already exists!"
             except Exception, e:
                 new_gig_request = Request.objects.get_or_create(event=event, band=band)[0]
+                # Send an email to the venue-owner of the event
+                send_mail('BANDit: New Gig Request', 'A new request has been received for event: ' + event.name + '.', 'bandit.app.contact@gmail.com', [event.venue.profile.user.email])
                 response = "Request sent."
 
     return HttpResponse(response)
@@ -486,6 +492,8 @@ def accept_gig_request(request):
                 event.band = band
                 event.save()
                 response = "Request accepted."
+                # Send an email to the accepted band
+                send_mail('BANDit: Request accepted', 'Your request for event: ' + event.name + ' has been accepted!', 'bandit.app.contact@gmail.com', [band.profile.user.email])
             else:
                 response = "A band is already booked for this event."
 
