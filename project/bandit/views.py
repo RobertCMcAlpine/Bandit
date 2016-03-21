@@ -39,6 +39,7 @@ def register(request):
             
             # Now we hash the password with the set_password method.
             # Once hashed, we can update the user object.
+            original_password = user.password
             user.set_password(user.password)
             user.save()
             
@@ -56,8 +57,17 @@ def register(request):
             # Now we save the Profile model instance.
             profile.save()
     
-            # Update our variable to tell the template registration was successful.
-            registered = True
+            # Log in the user.
+            authenticated_user = authenticate(username=user.username, password=original_password)
+            login(request, authenticated_user)
+
+            # Redirect to 'Edit Profile' to fill in the rest of the details.
+            if profile.profile_type == "B":
+                new_band = Band.objects.get_or_create(profile=profile)
+                return HttpResponseRedirect('/bandit/band/' + profile.slug + '/edit/')
+            elif profile.profile_type == "V":
+                new_venue = Venue.objects.get_or_create(profile=profile)
+                return HttpResponseRedirect('/bandit/venue/' + profile.slug + '/edit/')
         
         # Invalid form or forms - mistakes or something else?
         # Print problems to the terminal.
@@ -73,8 +83,8 @@ def register(request):
 
     # Render the template depending on the context.
     return render(request,
-                  'bandit/register.html',
-                  {'user_form': user_form, 'profile_form': profile_form, 'registered': registered} )
+                 'bandit/register.html',
+                 {'user_form': user_form, 'profile_form': profile_form, 'registered': registered} )
 
 def user_login(request):
     # If the request is a HTTP POST, try to pull out the relevant information.

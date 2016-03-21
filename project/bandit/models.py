@@ -34,7 +34,7 @@ class Profile(models.Model):
 
 class Band(models.Model):
     profile = models.OneToOneField(Profile)
-    number_of_members = models.PositiveIntegerField()
+    number_of_members = models.PositiveIntegerField(null=True, blank=True)
 
     GENRE_OPTIONS = (
                     ("Alternative","Alternative"),
@@ -61,15 +61,15 @@ class Band(models.Model):
                      ("Unclassifiable","Unclassifiable"),
                      ("World","World"),
                     )
-    genre = models.CharField(choices=GENRE_OPTIONS, max_length=128)
+    genre = models.CharField(choices=GENRE_OPTIONS, max_length=128, null=True, blank=True)
 
     def __unicode__(self):
         return self.profile.name
 
 class Venue(models.Model):
     profile = models.OneToOneField(Profile)
-    address = models.CharField(max_length=512)
-    post_code = models.CharField(max_length=10)
+    address = models.CharField(max_length=512, null=True, blank=True)
+    post_code = models.CharField(max_length=10, null=True, blank=True)
 
     def __unicode__(self):
         return self.profile.name
