@@ -1,15 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+ <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+ <link rel="stylesheet" href="css/bootstrap-theme.css" type="text/css" />
+ <link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css" />
+ <link rel="stylesheet" href="css/style.css" type="text/css"/>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/slider.js"></script>
         <title>BANDit</title>
     </head>
 
     <body>
+	<div class="container-fluid">
         {% if profile and venue %}
+			<div class="row">
             <h1>{{ profile_name }}</h1>
-            {% if profile.profile_picture %}
-                <img src="{{ profile.profile_picture.url }}" alt="profile_picture">
-            {% endif %}
+			</div>
+            <div class="row">
+			<div class="col-md-6">
             <h2>Details</h2>
             Description: {{ profile.description }} <br />
             City: {{ profile.city }} <br />
@@ -17,23 +29,38 @@
             Website: {{ profile.website }} <br />
             Address: {{ venue.address }} <br />
             Post Code: {{ venue.post_code }} <br />
-
+			</div>
+			<div class="col-md-6">
+			{% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="profile_picture" />
+            {% endif %}
+			</div>
+			</div>
+			<div class="row">
+			<div class="class-md-6">
+			<h2>Events</h2>
             {% if events %}
-            <h2>Events</h2>
-                <ul>
+                     <ul  class="list-group requests">
                 {% for event in events %}
                     <li><a href="/bandit/venue/{{ profile.slug }}/event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.start_time }}</a></li>
                 {% endfor %}
             </ul>
             {% endif %}
-
+			</div>
+			</div>
             {% if accessed_by_owner %}
-                <a href="/bandit/venue/{{ profile.slug }}/add_event/">Add Event</a> <br />
+			<div class="row">
+			<div class="col-md-4">
+                <a href="/bandit/venue/{{ profile.slug }}/add_event/">Add Event</a> 
                 <a href="/bandit/venue/{{ profile.slug }}/edit/">Edit Profile</a>
+			</div>
+			</div>
             {% endif %}
 
         {% else %}
-            The specified venue {{ profile_name }} does not exist!
+           <div class="alert alert-danger" role="alert"><h1> The specified venue {{ profile_name }} does not exist!</h1></div>
         {% endif %}
+		</div>
+		
     </body>
 </html>
