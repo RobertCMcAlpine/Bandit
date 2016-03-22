@@ -11,13 +11,23 @@ from django.core.mail import send_mail
 
 
 def index(request):
-    # Query the database for a list of ALL categories currently stored.
-    # Order the categories by no. likes in descending order.
-    # Retrieve the top 5 only - or all if less than 5.
-    # Place the list in our context_dict dictionary which will be passed to the template engine.
-    
+    context_dict = {}
+
+    # Retrieve the 5 newest bands.
+    new_bands = Band.objects.order_by('-id')[5]
+    context_dict['new_bands'] = new_bands
+
+    # Retrieve the 5 newest venues.
+    new_venues = Venue.objects.order_by('-id')[5]
+    context_dict['new_venues'] = new_venues
+
+    # Retrieve 5 upcoming events.
+    today = date.today()
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[5]
+    context_dict['upcoming_events'] = upcoming_events
+
     # Render the response and send it back!
-    return render(request, 'bandit/index.html')
+    return render(request, 'bandit/index.html', context_dict)
 
 
 def register(request):
