@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-
-{% load staticfiles %}
-
-
-<html>
-    <head>
-        <title>BANDit</title>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		<script src="{% static 'js/bandit-jquery.js' %}"></script>
-    </head>
-
-    <body>
         {% if event and gig_request %}
             <h1><a href="../../">{{ event_name }}</a></h1>
             <h3>Band: <a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></h3>
@@ -23,5 +10,4 @@
         {% else %}
             The specified event does not exist, or the specified band has not made a request for it!
         {% endif %}
-    </body>
-</html>
+    
