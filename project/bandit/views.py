@@ -146,6 +146,8 @@ def get_venue_notifications(request):
         # Is the user a venue?
         venue = Venue.objects.get(profile__user=request.user)
         new_requests = Request.objects.filter(event__venue=venue, seen=False).order_by('request_date')
+        if not new_requests:
+            return {}
         return new_requests
 
     except Venue.DoesNotExist:
@@ -158,6 +160,8 @@ def get_band_notifications(request):
         # Is the user a band?
         band = Band.objects.get(profile__user=request.user)
         new_accepted_events = Event.objects.filter(band=band, seen=False)
+        if not new_accepted_events:
+            return {}
         return new_accepted_events
 
     except Band.DoesNotExist:
@@ -175,9 +179,8 @@ def band(request, band_profile_name_slug):
         context_dict['band'] = band
 
         # Is the user a band?
-        if band.profile.user == request.user:
-            if band_notifications:
-                context_dict['band_notifications'] = band_notifications
+        if band_notifications:
+            context_dict['band_notifications'] = band_notifications
 
             # Is the user the owner of the profile?
             # If so, show 'Edit Profile' option
@@ -208,9 +211,8 @@ def venue(request, venue_profile_name_slug):
         context_dict['events'] = events
 
         # Is the user a venue?
-        if venue.profile.user == request.user:
-            if venue_notifications:
-                context_dict['venue_notifications'] = venue_notifications
+        if venue_notifications:
+            context_dict['venue_notifications'] = venue_notifications
 
             # Is the user the owner of the profile?
             # If so, show 'Add Event' option
@@ -250,11 +252,11 @@ def event(request, venue_profile_name_slug, event_date_slug):
         if venue_notifications:
             context_dict['venue_notifications'] = venue_notifications
 
-        # If the user is the venue-owner of the event, show the list of requests
-        if venue.profile.user == request.user:
-            # Retrieve the requests for this event.
-            requests = Request.objects.filter(event=event)
-            context_dict['requests'] = requests
+            # If the user is the venue-owner of the event, show the list of requests
+            if venue.profile.user == request.user:
+                # Retrieve the requests for this event.
+                requests = Request.objects.filter(event=event)
+                context_dict['requests'] = requests
 
         # Is the user a band?
         if band_notifications:
