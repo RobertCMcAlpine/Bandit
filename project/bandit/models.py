@@ -84,6 +84,9 @@ class Event(models.Model):
     end_time = models.TimeField(null=True, blank=True)
     reward = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
+    # A boolean to indicate whether the event has been seen
+    # by the accepted band.
+    seen = models.BooleanField(default=True)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
@@ -97,6 +100,8 @@ class Request(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
     request_date = models.DateField(("Date"), default=date.today)
+    # A boolean to indicate whether the request has been seen
+    # by the venue-owner.
     seen = models.BooleanField(default=False)
 
     def __unicode__(self):
