@@ -11,13 +11,23 @@ from django.core.mail import send_mail
 
 
 def index(request):
-    # Query the database for a list of ALL categories currently stored.
-    # Order the categories by no. likes in descending order.
-    # Retrieve the top 5 only - or all if less than 5.
-    # Place the list in our context_dict dictionary which will be passed to the template engine.
-    
+    context_dict = {}
+
+    # Retrieve the 5 newest bands.
+    new_bands = Band.objects.order_by('-id')[5]
+    context_dict['new_bands'] = new_bands
+
+    # Retrieve the 5 newest venues.
+    new_venues = Venue.objects.order_by('-id')[5]
+    context_dict['new_venues'] = new_venues
+
+    # Retrieve 5 upcoming events.
+    today = date.today()
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[5]
+    context_dict['upcoming_events'] = upcoming_events
+
     # Render the response and send it back!
-    return render(request, 'bandit/index.html')
+    return render(request, 'bandit/index.html', context_dict)
 
 
 def register(request):
@@ -145,7 +155,9 @@ def get_venue_notifications(request):
     try:
         # Is the user a venue?
         venue = Venue.objects.get(profile__user=request.user)
-        new_requests = Request.objects.filter(venue=venue, seen=False).order_by('request_date')
+        new_requests = Request.objects.filter(event__venue=venue, seen=False).order_by('request_date')
+        if not new_requests:
+            return {}
         return new_requests
 
     except Venue.DoesNotExist:
@@ -158,6 +170,8 @@ def get_band_notifications(request):
         # Is the user a band?
         band = Band.objects.get(profile__user=request.user)
         new_accepted_events = Event.objects.filter(band=band, seen=False)
+        if not new_accepted_events:
+            return {}
         return new_accepted_events
 
     except Band.DoesNotExist:
@@ -175,9 +189,8 @@ def band(request, band_profile_name_slug):
         context_dict['band'] = band
 
         # Is the user a band?
-        if band.profile.user == request.user:
-            if band_notifications:
-                context_dict['band_notifications'] = band_notifications
+        if band_notifications:
+            context_dict['band_notifications'] = band_notifications
 
             # Is the user the owner of the profile?
             # If so, show 'Edit Profile' option
@@ -208,9 +221,8 @@ def venue(request, venue_profile_name_slug):
         context_dict['events'] = events
 
         # Is the user a venue?
-        if venue.profile.user == request.user:
-            if venue_notifications:
-                context_dict['venue_notifications'] = venue_notifications
+        if venue_notifications:
+            context_dict['venue_notifications'] = venue_notifications
 
             # Is the user the owner of the profile?
             # If so, show 'Add Event' option
@@ -241,6 +253,7 @@ def event(request, venue_profile_name_slug, event_date_slug):
         # Can we find an event of that venue for that date?
         # If we can't, the .get() method raises a DoesNotExist exception.
         event = Event.objects.get(slug=event_date_slug, venue=venue)
+        print event
         context_dict['event'] = event
         context_dict['event_name'] = event.name
 
@@ -248,12 +261,12 @@ def event(request, venue_profile_name_slug, event_date_slug):
         # Is the user a venue?
         if venue_notifications:
             context_dict['venue_notifications'] = venue_notifications
-            
-        # If the user is the venue-owner of the event, show the list of requests
-        if venue.profile.user == request.user:
-            # Retrieve the requests for this event.
-            requests = Request.objects.filter(event=event)
-            context_dict['requests'] = requests
+
+            # If the user is the venue-owner of the event, show the list of requests
+            if venue.profile.user == request.user:
+                # Retrieve the requests for this event.
+                requests = Request.objects.filter(event=event)
+                context_dict['requests'] = requests
 
         # Is the user a band?
         if band_notifications:
