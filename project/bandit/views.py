@@ -137,31 +137,57 @@ def user_logout(request):
     return HttpResponseRedirect('/bandit/')
 
 
+
+
+# Should be called by all the other views!
+@login_required
+def get_venue_notifications(request):
+    try:
+        # Is the user a venue?
+        venue = Venue.objects.get(profile__user=request.user)
+        new_requests = Request.objects.filter(venue=venue, seen=False).order_by('request_date')
+        return new_requests
+
+    except Venue.DoesNotExist:
+        return None
+
+# Should be called by all the other views!
+@login_required
+def get_band_notifications(request):
+    try:
+        # Is the user a band?
+        band = Band.objects.get(profile__user=request.user)
+        new_accepted_events = Event.objects.filter(band=band, seen=False)
+        return new_accepted_events
+
+    except Band.DoesNotExist:
+        return None
+
+
 def band(request, band_profile_name_slug):
     context_dict = {}
 
-    try:
-        # Can we find a profile name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=band_profile_name_slug)
-        context_dict['profile'] = profile
-        context_dict['profile_name'] = profile.name
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
 
-        # Does this profile correspond to a band?
-        # If not, the .get() method raises a DoesNotExist exception.
-        band = Band.objects.get(profile=profile)
+    try:
+        band = Band.objects.get(profile__slug=band_profile_name_slug)
         context_dict['band'] = band
 
-        # Is the user authenticated?
-        if request.user.is_authenticated():
-            profile = Profile.objects.get(user=request.user)
+        # Is the user a band?
+        if band_notifications:
+            context_dict['band_notifications'] = band_notifications
 
             # Is the user the owner of the profile?
             # If so, show 'Edit Profile' option
-            if band.profile == profile:
+            if band.profile.user == request.user:
                 context_dict['accessed_by_owner'] = True
 
-    except (Profile.DoesNotExist, Band.DoesNotExist):
+        # Is the user a venue?
+        if venue_notifications:
+            context_dict['venue_notifications'] = venue_notifications
+
+    except Band.DoesNotExist:
         pass
 
     return render(request, 'bandit/band.html', context_dict)
@@ -169,41 +195,40 @@ def band(request, band_profile_name_slug):
 def venue(request, venue_profile_name_slug):
     context_dict = {}
 
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
+
     try:
-        # Can we find a profile name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        profile = Profile.objects.get(slug=venue_profile_name_slug)
-        context_dict['profile'] = profile
-        context_dict['profile_name'] = profile.name
-        
-        # Does this profile correspond to a venue?
-        # If not, the .get() method raises a DoesNotExist exception.
-        venue = Venue.objects.get(profile=profile)
+        venue = Venue.objects.get(profile__slug=venue_profile_name_slug)
         context_dict['venue'] = venue
 
         # Retrieve all the events of the specified venue.
         events = Event.objects.filter(venue=venue)
         context_dict['events'] = events
 
-        # email test
-        #send_mail('Request accepted.', 'Your request has been accepted.', 'bandit.app.contact@gmail.com', ['thod.kal@gmail.com'])
-
-        # Is the user authenticated?
-        if request.user.is_authenticated():
-            profile = Profile.objects.get(user=request.user)
+        # Is the user a venue?
+        if venue_notifications:
+            context_dict['venue_notifications'] = venue_notifications
 
             # Is the user the owner of the profile?
             # If so, show 'Add Event' option
-            if venue.profile == profile:
+            if venue.profile.user == request.user:
                 context_dict['accessed_by_owner'] = True
 
-    except (Profile.DoesNotExist, Venue.DoesNotExist):
+        # Is the user a band?
+        if band_notifications:
+            context_dict['band_notifications'] = band_notifications
+
+    except Venue.DoesNotExist:
         pass
 
     return render(request, 'bandit/venue.html', context_dict)
 
 def event(request, venue_profile_name_slug, event_date_slug):
     context_dict = {}
+
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
 
     try:
         # Does this venue_profile_name_slug correspond to a venue?
@@ -218,30 +243,36 @@ def event(request, venue_profile_name_slug, event_date_slug):
         context_dict['event_name'] = event.name
 
         # Show user-specific content...
-        if request.user.is_authenticated():
-            profile = Profile.objects.get(user=request.user)
-            context_dict['username'] = request.user.username
-
+        # Is the user a venue?
+        if venue_notifications:
+            context_dict['venue_notifications'] = venue_notifications
             # If the user is the venue-owner of the event, show the list of requests
-            if venue.profile == profile:
+            if venue.profile.user == request.user:
                 # Retrieve the requests for this event.
                 requests = Request.objects.filter(event=event)
                 context_dict['requests'] = requests
 
-            # If the user is a band...
-            # ... and hasn't requested to play this gig, show a 'Request' button.
-            # ... and has requested to play this gig, show the date of request.
+        # Is the user a band?
+        if band_notifications:
+            context_dict['band_notifications'] = band_notifications
+
+            # Retrieve the Band that belongs to the user.
             try:
                 band = Band.objects.get(profile=profile)
                 context_dict['band'] = band
             except Band.DoesNotExist:
                 band = None
 
-            if not band == None:
-                gig_request = Request.objects.get(event=event, band=band)
+            if band:
+                # Has this band requested to play this gig?
+                # If not, .get() returns None.
+                gig_request = Request.objects.get(event=event, band__profile__user=request.user)
                 context_dict['gig_request'] = gig_request
+                # Has the band been recently accepted for this event?
+                # If so, set the 'seen' attribute to True.
+                event.seen=True
 
-    except (Event.DoesNotExist, Profile.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist):
+    except (Event.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist):
         pass
 
     return render(request, 'bandit/event.html', context_dict)
@@ -249,6 +280,9 @@ def event(request, venue_profile_name_slug, event_date_slug):
 @login_required
 def request(request, venue_profile_name_slug, event_date_slug, band_profile_name_slug):
     context_dict = {}
+
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
 
     try:
         # Does this venue_profile_name_slug correspond to a venue?
@@ -260,25 +294,19 @@ def request(request, venue_profile_name_slug, event_date_slug, band_profile_name
         # If we can't, the .get() method raises a DoesNotExist exception.
         event = Event.objects.get(slug=event_date_slug, venue=venue)
 
-        # Is the user authenticated?
-        # If not, contect_dict will remain empty.
-        if request.user.is_authenticated():
-            profile = Profile.objects.get(user=request.user)
-            context_dict['username'] = request.user.username
+        # Is the user a venue?
+        if venue_notifications:
+            context_dict['venue_notifications'] = venue_notifications
 
             # Is the user the owner of the event?
             # If not, access to this information is denied!
-            if event.venue.profile == profile:
+            if event.venue.profile.user == request.user:
                 context_dict['event'] = event
                 context_dict['event_name'] = event.name
 
-                # Can we find a profile name slug with the given name?
-                # If we can't, the .get() method raises a DoesNotExist exception.
-                profile = Profile.objects.get(slug=band_profile_name_slug)
-
-                # Does this profile correspond to a band?
+                # Does this band_profile_name_slug correspond to a band?
                 # If not, the .get() method raises a DoesNotExist exception.
-                band = Band.objects.get(profile=profile)
+                band = Band.objects.get(profile__slug=band_profile_name_slug)
                 context_dict['band'] = band
 
                 # Has this band made a request for this event?
@@ -292,12 +320,14 @@ def request(request, venue_profile_name_slug, event_date_slug, band_profile_name
                 # If not, an 'Accept' button should be shown...
                 if event.band:
                     context_dict['accepted_band'] = event.band
+            elif band_notifications:
+                context_dict['band_notifications'] = band_notifications
             else:
                 # The user is not the owner of the specified event.
                 # We return a 403 (Forbidden)
                 raise PermissionDenied
 
-    except (Event.DoesNotExist, Band.DoesNotExist, Profile.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist):
+    except (Event.DoesNotExist, Band.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist):
         pass
 
     return render(request, 'bandit/request.html', context_dict)
@@ -306,19 +336,21 @@ def request(request, venue_profile_name_slug, event_date_slug, band_profile_name
 def add_event(request, venue_profile_name_slug):
     context_dict = {}
 
+    venue_notifications = get_venue_notifications(request)
+
     try:
         # Does this venue_profile_name_slug correspond to a venue?
         # If not, the .get() method raises a DoesNotExist exception.
         venue = Venue.objects.get(profile__slug=venue_profile_name_slug)
 
         # Is the user authenticated?
-        # If not, contect_dict will remain empty.
-        if request.user.is_authenticated():
-            profile = Profile.objects.get(user=request.user)
-            context_dict['venue_profile_name_slug'] = venue_profile_name_slug
+        # If not, context_dict will remain empty.
+        if venue_notifications:
             # Is the user the the owner of this venue?
             # If so, show him the form!
-            if venue.profile == profile:
+            if venue.profile.user == request.user:
+                context_dict['venue_notifications'] = venue_notifications
+                context_dict['venue_profile_name_slug'] = venue_profile_name_slug
                 # A HTTP POST?
                 if request.method == 'POST':
                     form = EventForm(request.POST)
@@ -345,7 +377,7 @@ def add_event(request, venue_profile_name_slug):
                 context_dict['form'] = form
                 return render(request, 'bandit/add_event.html', context_dict)
 
-    except (Profile.DoesNotExist, Venue.DoesNotExist):
+    except Venue.DoesNotExist:
         pass
 
     # User is not authorised to add an event for the specified venue.
@@ -353,35 +385,10 @@ def add_event(request, venue_profile_name_slug):
     raise PermissionDenied
 
 @login_required
-def make_gig_request(request):
-    event_id = None
-    band_id = None
-    if request.method == 'GET':
-        event_id = request.GET['event_id']
-        band_id = request.GET['band_id']
-
-    new_gig_request = None
-    response = ""
-    if band_id and event_id:
-        event = Event.objects.get(id=int(event_id))
-        band = Band.objects.get(id=int(band_id))
-        if band and event:
-            # Continue only if band hasn't already made a request
-            existing_gig_request = None
-            try:
-                existing_gig_request = Request.objects.get(event=event, band=band)
-                response = "This request already exists!"
-            except Exception, e:
-                new_gig_request = Request.objects.get_or_create(event=event, band=band)[0]
-                # Send an email to the venue-owner of the event
-                send_mail('BANDit: New Gig Request', 'A new request has been received for event: ' + event.name + '.', 'bandit.app.contact@gmail.com', [event.venue.profile.user.email])
-                response = "Request sent."
-
-    return HttpResponse(response)
-
-@login_required
 def edit_band_profile(request, band_profile_name_slug):
     context_dict = {}
+
+    band_notifications = get_band_notifications(request)
 
     try:
         # Does this band_profile_name_slug correspond to a band?
@@ -391,6 +398,8 @@ def edit_band_profile(request, band_profile_name_slug):
 
         # Is the user the owner of this profile?
         if existing_band.profile.user == request.user:
+            if band_notifications:
+                context_dict['band_notifications'] = band_notifications
             # A HTTP POST?
             if request.method == 'POST':
                 profile_form = EditProfileForm(request.POST, request.FILES, instance=existing_band.profile)
@@ -429,6 +438,8 @@ def edit_band_profile(request, band_profile_name_slug):
 def edit_venue_profile(request, venue_profile_name_slug):
     context_dict = {}
 
+    venue_notifications = get_venue_notifications(request)
+
     try:
         # Does this venue_profile_name_slug correspond to a venue?
         # If not, the .get() method raises a DoesNotExist exception.
@@ -437,6 +448,8 @@ def edit_venue_profile(request, venue_profile_name_slug):
 
         # Is the user the owner of this profile?
         if existing_venue.profile.user == request.user:
+            if venue_notifications:
+                context_dict['venue_notifications'] = venue_notifications
             # A HTTP POST?
             if request.method == 'POST':
                 profile_form = EditProfileForm(request.POST, request.FILES, instance=existing_venue.profile)
@@ -471,6 +484,33 @@ def edit_venue_profile(request, venue_profile_name_slug):
     # We return 403 (Forbidden)
     raise PermissionDenied
 
+@login_required
+def make_gig_request(request):
+    event_id = None
+    band_id = None
+    if request.method == 'GET':
+        event_id = request.GET['event_id']
+        band_id = request.GET['band_id']
+
+    new_gig_request = None
+    response = ""
+    if band_id and event_id:
+        event = Event.objects.get(id=int(event_id))
+        band = Band.objects.get(id=int(band_id))
+        if band and event:
+            # Continue only if band hasn't already made a request
+            existing_gig_request = None
+            try:
+                existing_gig_request = Request.objects.get(event=event, band=band)
+                response = "This request already exists!"
+            except Exception, e:
+                new_gig_request = Request.objects.get_or_create(event=event, band=band)[0]
+                # Send an email to the venue-owner of the event
+                send_mail('BANDit: New Gig Request', 'A new request has been received for event: ' + event.name + '.', 'bandit.app.contact@gmail.com', [event.venue.profile.user.email])
+                response = "Request sent."
+
+    return HttpResponse(response)
+
 
 @login_required
 def accept_gig_request(request):
@@ -490,6 +530,9 @@ def accept_gig_request(request):
             # If not, book this band!
             if not event.band:
                 event.band = band
+                # Set the boolean attribute 'seen' to false, so that the accepted band
+                # gets a notification.
+                event.seen = False
                 event.save()
                 response = "Request accepted."
                 # Send an email to the accepted band
@@ -499,24 +542,18 @@ def accept_gig_request(request):
 
     return HttpResponse(response)
 
-# Should be called by all the other views!
-def get_venue_notifications(request):
-    try:
-        # Is the user authenticated?
-        if request.user.is_authenticated():
-            # Is the user a venue?
-            profile = Profile.objects.get(user=request.user)
-            venue = Venue.objects.get(profile=profile)
-
-            new_requests = Request.objects.filter(venue=venue, seen=False)
-
-            return new_requests
-
-    except (Profile.DoesNotExist, Venue.DoesNotExist):
-        return None
 
 def events(request):
     context_dict = {}
+
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
+
+    if band_notifications:
+        context_dict['band_notifications'] = band_notifications
+    if venue_notifications:
+        context_dict['venue_notifications'] = venue_notifications
+
     today = date.today()
     event_list = Event.objects.filter(date__gte=today).order_by('date')
     context_dict['event_list'] = event_list
@@ -524,12 +561,30 @@ def events(request):
 
 def bands(request):
     context_dict = {}
+
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
+
+    if band_notifications:
+        context_dict['band_notifications'] = band_notifications
+    if venue_notifications:
+        context_dict['venue_notifications'] = venue_notifications
+
     band_list = Band.objects.order_by('-profile__name')
     context_dict['band_list'] = band_list
     return render(request, 'bandit/bands.html', context_dict)
 
 def venues(request):
     context_dict = {}
+
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
+
+    if band_notifications:
+        context_dict['band_notifications'] = band_notifications
+    if venue_notifications:
+        context_dict['venue_notifications'] = venue_notifications
+
     venue_list = Venue.objects.order_by('-profile__name')
     context_dict['venue_list'] = venue_list
     return render(request, 'bandit/venues.html', context_dict)
