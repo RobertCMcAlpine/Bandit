@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Search: {{ query_terms }}{% endblock %}
+
+{% block content_block %}
+		{% if bands %}
+            <ul>
+                {% for band in bands %}
+                    <li><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if venues %}
+            <ul>
+                {% for venue in venues %}
+                    <li><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if events %}
+            <ul>
+                {% for event in events %}
+                    <li><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{ event.date }}">{{ event.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+{% endblock %}
