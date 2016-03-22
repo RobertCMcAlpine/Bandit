@@ -5,16 +5,16 @@
     </head>
 
     <body>
-        {% if profile and venue %}
-            <h1>{{ profile_name }}</h1>
-            {% if profile.profile_picture %}
-                <img src="{{ profile.profile_picture.url }}" alt="profile_picture">
+        {% if venue %}
+            <h1>{{ venue.profile.name }}</h1>
+            {% if venue.profile.profile_picture %}
+                <img src="{{ venue.profile.profile_picture.url }}" alt="profile_picture">
             {% endif %}
             <h2>Details</h2>
-            Description: {{ profile.description }} <br />
-            City: {{ profile.city }} <br />
-            Phone number: {{ profile.phone_number }} <br />
-            Website: {{ profile.website }} <br />
+            Description: {{ venue.profile.description }} <br />
+            City: {{ venue.profile.city }} <br />
+            Phone number: {{ venue.profile.phone_number }} <br />
+            Website: {{ venue.profile.website }} <br />
             Address: {{ venue.address }} <br />
             Post Code: {{ venue.post_code }} <br />
 
@@ -22,18 +22,18 @@
             <h2>Events</h2>
                 <ul>
                 {% for event in events %}
-                    <li><a href="/bandit/venue/{{ profile.slug }}/event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.start_time }}</a></li>
+                    <li><a href="/bandit/venue/{{ venue.profile.slug }}/event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.start_time }}</a></li>
                 {% endfor %}
             </ul>
             {% endif %}
 
             {% if accessed_by_owner %}
-                <a href="/bandit/venue/{{ profile.slug }}/add_event/">Add Event</a> <br />
-                <a href="/bandit/venue/{{ profile.slug }}/edit/">Edit Profile</a>
+                <a href="/bandit/venue/{{ venue.profile.slug }}/add_event/">Add Event</a> <br />
+                <a href="/bandit/venue/{{ venue.profile.slug }}/edit/">Edit Profile</a>
             {% endif %}
 
         {% else %}
-            The specified venue {{ profile_name }} does not exist!
+            The specified venue {{ venue.profile.name }} does not exist!
         {% endif %}
     </body>
 </html>

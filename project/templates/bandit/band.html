@@ -21,24 +21,24 @@
 </head>
 
     <body>
-        {% if profile and band %}
-            <h1>{{ profile_name }}</h1>
-            {% if profile.profile_picture %}
-                <img src="{{ profile.profile_picture.url }}" alt="profile_picture" /> 
+        {% if band %}
+            <h1>{{ band.profile.name }}</h1>
+            {% if band.profile.profile_picture %}
+                <img src="{{ band.band.profile.profile_picture.url }}" alt="profile_picture" /> 
             {% endif %}
-            Description: {{ profile.description }} <br />
-            City: {{ profile.city }} <br />
-            Phone number: {{ profile.phone_number }} <br />
-            Website: {{ profile.website }} <br />
+            Description: {{ band.profile.description }} <br />
+            City: {{ band.profile.city }} <br />
+            Phone number: {{ band.profile.phone_number }} <br />
+            Website: {{ band.profile.website }} <br />
             Members: {{ band.number_of_members }} <br />
             Genre: {{ band.genre }} <br />
 
             {% if accessed_by_owner %}
-                <a href="/bandit/band/{{ profile.slug }}/edit">Edit Profile</a>
+                <a href="/bandit/band/{{ band.profile.slug }}/edit">Edit Profile</a>
             {% endif %}
 
         {% else %}
-            The specified band {{ profile_name }} does not exist!
+            The specified band {{ band.profile.name }} does not exist!
         {% endif %}
     </body>
 </html>
