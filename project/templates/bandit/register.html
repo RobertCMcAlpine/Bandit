@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+<<<<<<< HEAD
 	  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
@@ -12,10 +13,14 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="js/slider.js"></script>
         <title>Bandit - Register</title>
+=======
+        <title>BANDit - Register</title>
+>>>>>>> refs/remotes/origin/master
     </head>
     
     <body>
         
+<<<<<<< HEAD
         <div class="container-fluid card">
 		{% if registered %}
         Bandit says: <strong>thank you for registering!</strong>
@@ -51,6 +56,28 @@
 		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet aliquam augue. Pellentesque non eros erat. Etiam eget nulla sed arcu blandit convallis</p>
 		</div>
 		</div>
+=======
+        {% if registered %}
+            Bandit says: <strong>thank you for registering!</strong>
+            <a href="/bandit/">Return to the homepage.</a><br />
+        {% else %}
+            Bandit says: <strong>register here!</strong><br />
+            
+            <form id="user_form" method="post" action="/bandit/register/"
+                enctype="multipart/form-data">
+                
+                {% csrf_token %}
+                
+                <!-- Display each form. The as_p method wraps each element in a paragraph
+                 (<p>) element. This ensures each element appears on a new line,
+                 making everything look neater. -->
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+                
+                <!-- Provide a button to click to submit the form. -->
+                <input type="submit" name="submit" value="Register" />
+            </form>
+>>>>>>> refs/remotes/origin/master
         {% endif %}
 		</div>
     </body>

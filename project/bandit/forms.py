@@ -34,8 +34,6 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = ('name', 'date', 'start_time', 'end_time', 'reward', 'description')
 
-
-
 class BandForm(forms.ModelForm):
     class Meta():
         model = Band

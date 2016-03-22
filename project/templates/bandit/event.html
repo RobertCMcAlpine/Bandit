@@ -53,7 +53,6 @@
 {% else %}
 <h3>Band: Not allocated.</h4>
 {% endif %}
-<p>User: {{ username }} </p>
 
             <!-- If the user is the venue-owner of the event, show list of requests. -->
             {% if requests %}
@@ -72,13 +71,14 @@
                 {% if gig_request %}
 				<div class="row">
                     <p>Date of request: {{ gig_request.request_date }}</p>
-					 {% else %}
-                    <a href="">Make request</a>
+                	<!-- Otherwise, show a button/link to make a request. -->
+					{% else %}
+	                    <button id="make_gig_request" data-evid="{{ event.id }}" data-bandid="{{ band.id }}" class="btn btn-primary" type="button">Make Request</button>
+	                    <strong id="gig_request_sent"></strong>
 					{% endif %}
-				</div>
-                <!-- Otherwise, show a button/link to make a request. -->
-               
             {% endif %}
+				</div>
+               
 
 {% else %}
 <div class="alert alert-danger" role="alert"><h1>The specified event {{ event_name }} does not exist!</h1></div>

@@ -34,7 +34,7 @@ class Profile(models.Model):
 
 class Band(models.Model):
     profile = models.OneToOneField(Profile)
-    number_of_members = models.PositiveIntegerField()
+    number_of_members = models.PositiveIntegerField(null=True, blank=True)
 
     GENRE_OPTIONS = (
                     ("Alternative","Alternative"),
@@ -61,15 +61,15 @@ class Band(models.Model):
                      ("Unclassifiable","Unclassifiable"),
                      ("World","World"),
                     )
-    genre = models.CharField(choices=GENRE_OPTIONS, max_length=128)
+    genre = models.CharField(choices=GENRE_OPTIONS, max_length=128, null=True, blank=True)
 
     def __unicode__(self):
         return self.profile.name
 
 class Venue(models.Model):
     profile = models.OneToOneField(Profile)
-    address = models.CharField(max_length=512)
-    post_code = models.CharField(max_length=10)
+    address = models.CharField(max_length=512, null=True, blank=True)
+    post_code = models.CharField(max_length=10, null=True, blank=True)
 
     def __unicode__(self):
         return self.profile.name
@@ -84,6 +84,9 @@ class Event(models.Model):
     end_time = models.TimeField(null=True, blank=True)
     reward = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
+    # A boolean to indicate whether the event has been seen
+    # by the accepted band.
+    seen = models.BooleanField(default=True)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
@@ -97,6 +100,8 @@ class Request(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
     request_date = models.DateField(("Date"), default=date.today)
+    # A boolean to indicate whether the request has been seen
+    # by the venue-owner.
     seen = models.BooleanField(default=False)
 
     def __unicode__(self):
