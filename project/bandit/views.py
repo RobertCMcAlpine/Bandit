@@ -175,8 +175,9 @@ def band(request, band_profile_name_slug):
         context_dict['band'] = band
 
         # Is the user a band?
-        if band_notifications:
-            context_dict['band_notifications'] = band_notifications
+        if band.profile.user == request.user:
+            if band_notifications:
+                context_dict['band_notifications'] = band_notifications
 
             # Is the user the owner of the profile?
             # If so, show 'Edit Profile' option
@@ -207,8 +208,9 @@ def venue(request, venue_profile_name_slug):
         context_dict['events'] = events
 
         # Is the user a venue?
-        if venue_notifications:
-            context_dict['venue_notifications'] = venue_notifications
+        if venue.profile.user == request.user:
+            if venue_notifications:
+                context_dict['venue_notifications'] = venue_notifications
 
             # Is the user the owner of the profile?
             # If so, show 'Add Event' option
@@ -246,11 +248,12 @@ def event(request, venue_profile_name_slug, event_date_slug):
         # Is the user a venue?
         if venue_notifications:
             context_dict['venue_notifications'] = venue_notifications
-            # If the user is the venue-owner of the event, show the list of requests
-            if venue.profile.user == request.user:
-                # Retrieve the requests for this event.
-                requests = Request.objects.filter(event=event)
-                context_dict['requests'] = requests
+            
+        # If the user is the venue-owner of the event, show the list of requests
+        if venue.profile.user == request.user:
+            # Retrieve the requests for this event.
+            requests = Request.objects.filter(event=event)
+            context_dict['requests'] = requests
 
         # Is the user a band?
         if band_notifications:
@@ -590,39 +593,29 @@ def venues(request):
     return render(request, 'bandit/venues.html', context_dict)
 
 def search(request):
+    context_dict = {}
+
     # If the request is a HTTP POST, try to pull out the relevant information.
-    if request.method == "POST":
+    if request.method == "GET":
         # Gather the query terms provided by the user
-        query_terms = request.POST.get('query_terms')
+        query_terms = request.GET.get('query_terms')
+
+        print query_terms
 
         # Search for bands where the name matches the query terms
-        bands = Band.objects.filter(profile__name=query_terms).order_by('profile__name')
+        bands = Band.objects.filter(profile__name__icontains=query_terms).order_by('profile__name')
+        context_dict['bands'] = bands
 
-        # Use Django's machinery to attempt to see if the username/password
-        # combination is valid - a User object is returned if it is.
-        user = authenticate(username=username, password=password)
+        # Search for venues where the name matches the query terms
+        venues = Venue.objects.filter(profile__name__icontains=query_terms).order_by('profile__name')
+        context_dict['venues'] = venues
 
-        # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
-        # with matching credentials was found.
-        if user:
-            # Is the account active? It could have been disabled...
-            if user.is_active:
-                # If the account is valid and active, we can log the user in.
-                # We'll send the user back to the homepage.
-                login(request, user)
-                return HttpResponseRedirect('/rango')
-            else:
-                # An inactive account was used - no logging in!
-                return HttpResponse("Your Rango account is disabled.")
-        else:
-            # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+        # Search for events where the name matches the query terms
+        events = Event.objects.filter(name__icontains=query_terms).order_by('name')
+        context_dict['events'] = events
 
-    # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
-    else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
-        return render(request, 'rango/login.html', {})
+        context_dict['query_terms'] = query_terms
+
+        # Return the results
+        return render(request, 'bandit/search.html', context_dict)
+
