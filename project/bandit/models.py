@@ -11,7 +11,7 @@ def get_image_path(instance, filename):
 class Profile(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=128)
-    profile_picture = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to=get_image_path, blank=True, null=True, default='images/defaultvenue.jpg')
     city = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
