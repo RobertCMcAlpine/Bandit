@@ -18,16 +18,17 @@
   
 </head>
 <body>
-
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 navig">
 <nav class="navbar navbar-default navbar-fixed-top">
 <div class="container-fluid">
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 navig">
-	<div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+	
+	<div class="hidden-xs hidden-sm col-md-2 col-lg-2">
 	<a class="navbar-brand" href="#">Band<b>IT</b></a>
 	</div>
+	
 	<form role="form" id="search_form" method="get" action="/bandit/search/">
-	<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4 searchbar">
+	<div class="col-xs-8 col-sm-4 col-md-4 col-lg-4 searchbar">
 	 <div class="input-group">
      <input type="text" class="form-control" name="query_terms" placeholder="Search for..." />
 	  <span class="input-group-btn">
@@ -57,19 +58,16 @@
 	</div>
 	</div>
 </div>
-</div>
+
 </nav>
+</div>
 <!-- content goes in here -->
 
 {% block content_block %}{% endblock %}
   
 <!-- end of content -->  
-  <nav class="navbar navbar-default navbar-static-bottom"> 
-  <div class="container-fluid">
-  <div class="row">
-	<p class="navbar-text navbar-right">&copy;2016  <b>Team Gig-A-Bit</b></p>
- </div>
-  </div>
-  </nav> 
+  <footer class="navbar-static-bottom"> 
+
+  </footer> 
 </body>
 </html>

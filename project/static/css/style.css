@@ -6,10 +6,14 @@ Custom style sheet
 
 body
 {
+height:100%;
 margin:0px;
 padding:0px;
 padding-top:80px;
+padding-bottom:60px;
 }
+
+
 .navig
 {
 top:10px;
@@ -48,15 +52,7 @@ min-height:80px;
 background:rgba(255, 255, 255,1);
 }
 
-.navbar-static-bottom
-{
-margin-bottom:0px;
-top:80px;
-height:30px;
-background:#2980b9;
-border:none;
-color:#fff;
-}
+
 .navbar-default .navbar-right
 {
 color:#fff;
@@ -133,6 +129,7 @@ width:70%;
 margin-left:auto;
 margin-right:auto;
 }
+
 
 h1
 {
