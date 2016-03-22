@@ -18,4 +18,5 @@ urlpatterns = patterns('',
                url(r'^venues/$', views.venues, name='venues'),
                url(r'^band/(?P<band_profile_name_slug>[\w\-]+)/edit/$', views.edit_band_profile, name='edit_band_profile'),
                url(r'^venue/(?P<venue_profile_name_slug>[\w\-]+)/edit/$', views.edit_venue_profile, name='edit_venue_profile'),
+               url(r'^search/$', views.search, name='search'),
                )
