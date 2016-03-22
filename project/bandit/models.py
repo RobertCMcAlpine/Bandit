@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import date,time
 from django.template.defaultfilters import slugify
 import os
+from django.core.validators import RegexValidator
 
 
 def get_image_path(instance, filename):
@@ -13,7 +14,8 @@ class Profile(models.Model):
     name = models.CharField(max_length=128)
     profile_picture = models.ImageField(upload_to=get_image_path, blank=True, null=True, default='images/defaultvenue.jpg')
     city = models.CharField(max_length=128)
-    phone_number = models.CharField(max_length=128)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Please enter a valid phone number (e.g. +441234567890)")
+    phone_number = models.CharField(validators=[phone_regex], blank=True, max_length=15) 
     description = models.CharField(max_length=1024)
     
     TYPE_OPTIONS =(

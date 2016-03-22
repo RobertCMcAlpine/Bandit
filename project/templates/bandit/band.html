@@ -1,14 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ band.profile.name }}{% endblock %}
+
+{% block content_block %}
 		<div class="container-fluid">
         {% if band %}
 			<div class="row">
-            <h1>{{ profile_name }}</h1>
+            <h1>{{ band.profile.name }}</h1>
             </div>
-            {% endif %}
 			<div class="row band-profile">
 			           
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			{% if band.profile.profile_picture %}
                 <img class="profile-pic" src="{{ band.profile.profile_picture.url }}" alt="profile_picture" /> 
+            {% endif %}
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <p>Description: {{ band.profile.description }}</p>
@@ -29,4 +34,4 @@
         {% else %}
            <div class="alert alert-danger" role="alert"><h1> The specified band {{ band.profile.name }} does not exist!</h1></div>
         {% endif %}
-   
+{% endblock %}

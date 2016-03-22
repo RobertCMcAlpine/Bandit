@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>BANDit</title>
-    </head>
+{% extends 'base.html' %}
 
-    <body>
+{% block title %}Edit Profile{% endblock %}
 
+{% block content_block %}
         {% if band_form and profile_form %}
             <h1>Edit Profile</h1>
 
@@ -24,3 +21,4 @@
     </body>
 
 </html>
+{% endblock %}
