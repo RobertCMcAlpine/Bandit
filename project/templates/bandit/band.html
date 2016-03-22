@@ -8,12 +8,12 @@
 			<div class="row">
             <h1>{{ band.profile.name }}</h1>
             </div>
-            {% endif %}
 			<div class="row band-profile">
 			           
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			{% if band.profile.profile_picture %}
                 <img class="profile-pic" src="{{ band.profile.profile_picture.url }}" alt="profile_picture" /> 
+            {% endif %}
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <p>Description: {{ band.profile.description }}</p>
