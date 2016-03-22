@@ -1,46 +1,5 @@
 {% extends 'base.html' %}
 
-{% block title %}{{}}{% endblock %}
-
-{% block content_block %}
-<!DOCTYPE html>
-
-{% load staticfiles %}
-
-<html lang="en">
-<head>
-	<title>BandIt</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/bootstrap-theme.css" type="text/css" />
-	<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/style.css" type="text/css"/>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src='{% static "js/bandit-jquery.js" %}'></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/slider.js"></script>
-</head>
-
-<body>
-
-<nav class="navbar navbar-default navbar-fixed-top">
-<div class="container-fluid">
-<div class="row">
-<div class="col-md-12 navig">
-<a class="navbar-brand" href="#">Band<b>IT</b></a>
-<ul class="nav nav-pills">
-<li role="presentation"><a href="#">Home</a></li>
-<li role="presentation"><a href="#">Profile</a></li>
-<li role="presentation"><a href="#">Messages</a></li>
-<li role="presentation"><a href="#">Events</a></li>
-<li role="presentation"><a href="#">Bands</a></li>
-</ul>
-</div>
-</div>
-</div>
-</nav>
 
 <div class="container-fluid card">
 <div class="row">
@@ -92,12 +51,3 @@
     
 </div>
 </div>
-<nav class="navbar navbar-default navbar-static-bottom"> 
-  <div class="container-fluid">
-  <div class="row">
-	<p class="navbar-text navbar-right">Copyright <b>Team Gig-A-Bit</b></p>
- </div>
-  </div>
-	</nav> 
-	</body>
-</html>

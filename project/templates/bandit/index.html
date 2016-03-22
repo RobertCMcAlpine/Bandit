@@ -1,19 +1,15 @@
 		{% extends 'base.html' %}
-	  {% if user.is_authenticated %}
-        <h1>Bandit says... hello {{ user.username }}!</h1>
-        {% else %}
-        <h1>Bandit says... hello world!</h1>
-        {% endif %}
+	  
         
         {% if user.is_authenticated %}
 		<!-- Content from base.html+loggedin.html goes in here -->
 		
-		{% block loggedin_block %}{% endblock %}
+		{% extends 'loggedin.html' %}
        <!-- <a href="/bandit/restricted/">Restricted Page</a><br />
         <a href="/bandit/logout/">Logout</a><br /> -->
         {% else %}
 		<!-- Content from base.html+notloggedin.html goes in here -->
-		
+		{% extends 'notloggedin.html' %}
         <!-- <a href="/bandit/register/">Register Here</a><br />
         <a href="/bandit/login/">Login</a><br /> -->
         {% endif %}
