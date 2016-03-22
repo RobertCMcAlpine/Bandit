@@ -1,15 +1,14 @@
 		{% extends 'base.html' %}
-	  
-        
+	{% block content_block %}
         {% if user.is_authenticated %}
-		<!-- Content from base.html+loggedin.html goes in here -->
 		
-		{% extends 'loggedin.html' %}
-       <!-- <a href="/bandit/restricted/">Restricted Page</a><br />
-        <a href="/bandit/logout/">Logout</a><br /> -->
+		
+			{% include 'bandit/loggedin.html' %}
+			
+      
         {% else %}
-		<!-- Content from base.html+notloggedin.html goes in here -->
-		{% extends 'notloggedin.html' %}
-        <!-- <a href="/bandit/register/">Register Here</a><br />
-        <a href="/bandit/login/">Login</a><br /> -->
-        {% endif %}
+		
+			{% include 'bandit/notloggedin.html' %}
+				
+		{% endif %}
+	{% endblock %} 
