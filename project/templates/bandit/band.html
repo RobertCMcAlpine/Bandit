@@ -20,9 +20,8 @@
 </head>
 
     <body>
-<<<<<<< HEAD
 		<div class="container-fluid">
-        {% if profile and band %}
+        {% if band %}
 			<div class="row">
             <h1>{{ profile_name }}</h1>
             </div>
@@ -30,34 +29,18 @@
 			<div class="row band-profile">
 			           
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-			{% if profile.profile_picture %}
-                <img class="profile-pic" src="{{ profile.profile_picture.url }}" alt="profile_picture" /> 
+			{% if band.profile.profile_picture %}
+                <img class="profile-pic" src="{{ band.profile.profile_picture.url }}" alt="profile_picture" /> 
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <p>Description: {{ profile.description }}</p>
-            <p>City: {{ profile.city }}</p>
-            <p>Phone number: {{ profile.phone_number }}</p>
-            <p>Website: {{ profile.website }} </p>
+            <p>Description: {{ band.profile.description }}</p>
+            <p>City: {{ band.profile.city }}</p>
+            <p>Phone number: {{ band.profile.phone_number }}</p>
+            <p>Website: {{ band.profile.website }} </p>
             <p>Members: {{ band.number_of_members }} </p>
             <p>Genre: {{ band.genre }} </p>
 			 {% if accessed_by_owner %}
-               <p> <a href="/bandit/band/{{ profile.slug }}/edit">Edit Profile</a> </p>
-=======
-        {% if band %}
-            <h1>{{ band.profile.name }}</h1>
-            {% if band.profile.profile_picture %}
-                <img src="{{ band.band.profile.profile_picture.url }}" alt="profile_picture" /> 
-            {% endif %}
-            Description: {{ band.profile.description }} <br />
-            City: {{ band.profile.city }} <br />
-            Phone number: {{ band.profile.phone_number }} <br />
-            Website: {{ band.profile.website }} <br />
-            Members: {{ band.number_of_members }} <br />
-            Genre: {{ band.genre }} <br />
-
-            {% if accessed_by_owner %}
-                <a href="/bandit/band/{{ band.profile.slug }}/edit">Edit Profile</a>
->>>>>>> refs/remotes/origin/master
+               <p> <a href="/bandit/band/{{ band.profile.slug }}/edit">Edit Profile</a> </p>
             {% endif %}
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -66,11 +49,7 @@
 			</div>
 		</div>
         {% else %}
-<<<<<<< HEAD
-           <div class="alert alert-danger" role="alert"><h1> The specified band {{ profile_name }} does not exist!</h1></div>
-=======
-            The specified band {{ band.profile.name }} does not exist!
->>>>>>> refs/remotes/origin/master
+           <div class="alert alert-danger" role="alert"><h1> The specified band {{ band.profile.name }} does not exist!</h1></div>
         {% endif %}
     </body>
 </html>
