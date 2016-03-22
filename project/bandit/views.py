@@ -588,3 +588,41 @@ def venues(request):
     venue_list = Venue.objects.order_by('-profile__name')
     context_dict['venue_list'] = venue_list
     return render(request, 'bandit/venues.html', context_dict)
+
+def search(request):
+    # If the request is a HTTP POST, try to pull out the relevant information.
+    if request.method == "POST":
+        # Gather the query terms provided by the user
+        query_terms = request.POST.get('query_terms')
+
+        # Search for bands where the name matches the query terms
+        bands = Band.objects.filter(profile__name=query_terms).order_by('profile__name')
+
+        # Use Django's machinery to attempt to see if the username/password
+        # combination is valid - a User object is returned if it is.
+        user = authenticate(username=username, password=password)
+
+        # If we have a User object, the details are correct.
+        # If None (Python's way of representing the absence of a value), no user
+        # with matching credentials was found.
+        if user:
+            # Is the account active? It could have been disabled...
+            if user.is_active:
+                # If the account is valid and active, we can log the user in.
+                # We'll send the user back to the homepage.
+                login(request, user)
+                return HttpResponseRedirect('/rango')
+            else:
+                # An inactive account was used - no logging in!
+                return HttpResponse("Your Rango account is disabled.")
+        else:
+            # Bad login details were provided. So we can't log the user in.
+            print "Invalid login details: {0}, {1}".format(username, password)
+            return HttpResponse("Invalid login details supplied.")
+
+    # The request is not a HTTP POST, so display the login form.
+    # This scenario would most likely be a HTTP GET.
+    else:
+        # No context variables to pass to the template system, hence the
+        # blank dictionary object...
+        return render(request, 'rango/login.html', {})
