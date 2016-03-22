@@ -39,7 +39,7 @@
 
 <div class="container-fluid card">
 <div class="row">
-<div class="col-md-12">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 {% if event %}
 <h1>{{ event_name }}</h1>
 <h2>Owner: <a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue }}</a></h2>
@@ -47,7 +47,7 @@
 <!-- If a band has been allocated to this event, show its name. -->
 </div>
 <div class="row">
-<div class="col-md-12">   
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">   
 {% if event.band %}
 <h3>Band: <a href="/bandit/band/{{ event.band.profile.slug }}">{{ event.band }}</a></h3>
 {% else %}

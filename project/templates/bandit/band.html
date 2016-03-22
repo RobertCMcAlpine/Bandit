@@ -28,11 +28,11 @@
             {% endif %}
 			<div class="row band-profile">
 			           
-			<div class="col-md-4">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			{% if profile.profile_picture %}
                 <img class="profile-pic" src="{{ profile.profile_picture.url }}" alt="profile_picture" /> 
 			</div>
-			<div class="col-md-4">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <p>Description: {{ profile.description }}</p>
             <p>City: {{ profile.city }}</p>
             <p>Phone number: {{ profile.phone_number }}</p>
@@ -43,8 +43,8 @@
                <p> <a href="/bandit/band/{{ profile.slug }}/edit">Edit Profile</a> </p>
             {% endif %}
 			</div>
-			<div class="col-md-4">
-				
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<p> photo gallery goes in here</p>
 			</div>
 			</div>
 		</div>
