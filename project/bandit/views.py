@@ -145,7 +145,7 @@ def get_venue_notifications(request):
     try:
         # Is the user a venue?
         venue = Venue.objects.get(profile__user=request.user)
-        new_requests = Request.objects.filter(venue=venue, seen=False).order_by('request_date')
+        new_requests = Request.objects.filter(event__venue=venue, seen=False).order_by('request_date')
         return new_requests
 
     except Venue.DoesNotExist:
@@ -241,6 +241,7 @@ def event(request, venue_profile_name_slug, event_date_slug):
         # Can we find an event of that venue for that date?
         # If we can't, the .get() method raises a DoesNotExist exception.
         event = Event.objects.get(slug=event_date_slug, venue=venue)
+        print event
         context_dict['event'] = event
         context_dict['event_name'] = event.name
 
@@ -248,7 +249,7 @@ def event(request, venue_profile_name_slug, event_date_slug):
         # Is the user a venue?
         if venue_notifications:
             context_dict['venue_notifications'] = venue_notifications
-            
+
         # If the user is the venue-owner of the event, show the list of requests
         if venue.profile.user == request.user:
             # Retrieve the requests for this event.
