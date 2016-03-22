@@ -18,6 +18,8 @@ top:10px;
 {
 float:right;
 min-width:100px;
+margin-top:2px;
+min-height:50px;
 }
 .navbar-brand
 {
@@ -59,6 +61,17 @@ color:#fff;
 {
 color:#fff;
 }
+
+.searchbar
+{
+top:6px;
+}
+
+.searchbar .btn
+{
+background:#337ab7;
+}
+
 .row
 {
 width:80%;
