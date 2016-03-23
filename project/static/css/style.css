@@ -189,7 +189,13 @@ margin-bottom:30px;
 text-align:center;
 color:#34495e;
 }
+.carousel-font
+{
+    font-family: "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.6em;
 
+}
 .navbar .container
 {
 width:80%;

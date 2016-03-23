@@ -25,7 +25,7 @@ def populate():
 
 	#Adding Myron's band, Weird Sisters
 	myron_user = add_user("myron", "myron@wizard.com", "myron")
-	myron_profile = add_profile(myron_user, "Weird Sisters", "-", "London",
+	myron_profile = add_profile(myron_user, "Weird Sisters", "static/images/ws_prof.jpg", "London",
 		"05647234080", "Eccentric glam-rockers with wands", "B", "www.weird-sisters.com")
 	myron_band = add_band(myron_profile, 6, "Unclassifiable")
 
@@ -37,15 +37,15 @@ def populate():
 
 	#Adding Jake's band, The Blues Brothers
 	jake_user = add_user("jake", "bbros@mail.com", "jake")
-	jake_profile = add_profile(jake_user, "The Blues Brothers", "-", "Illinois",
+	jake_profile = add_profile(jake_user, "The Blues Brothers", "static/images/bb_prof.jpg", "Illinois",
 		"01982477585", "We may be a duo just now but we'll be back to a band of 10 soon!", "B", "www.blues-bros.com")
 	jake_band = add_band(jake_profile, 2, "Blues/R&B")
 
 	#Adding Nigel's band, Spinal Tap
 	nigel_user = add_user("nigel", "spinaltap@mail.com", "nigel")
-	nigel_profile = add_profile(nigel_user, "Spinal Tap", "-", "Edinburgh",
+	nigel_profile = add_profile(nigel_user, "Spinal Tap", "static/images/spinal_prof.jpg", "Edinburgh",
 		"0105769445", "We will turn it up to 11 and rock your event!", "B", "www.spinal-tap.com")
-	nigel_band = add_band(nigel_profile, 2, "Rock")
+	nigel_band = add_band(nigel_profile, 3, "Rock")
 
 
 	# Adding Crappy Maths LT Venue...
@@ -62,7 +62,7 @@ def populate():
 
 	# Adding GUU Venue...
 	guu_user = add_user("fergus", "fergus@guu.com", "fergus")
-	guu_profile = add_profile(guu_user, "Glasgow University Union",  "-", "Glasgow",
+	guu_profile = add_profile(guu_user, "Glasgow University Union", "static/images/guu_prof.jpg", "Glasgow",
 		"02039096532", "Run by students for students", "V", "www.guu.co.uk")
 	guu_venue = add_venue(guu_profile, "University Of Glasgow", "G12 8AB")
 
@@ -74,8 +74,8 @@ def populate():
 
 	# Adding Barfly Venue...
 	barfly_user = add_user("lucy", "lucy@barfly.com", "lucy")
-	barfly_profile = add_profile(barfly_user, "Barfly",  "-", "London",
-		"078852218453", "The Barfly champions cool and upcoming talent, making it a destination for music fans and partygoers alike" "V", "www.barfly.co.uk")
+	barfly_profile = add_profile(barfly_user, "Barfly",  "static/images/barfly_prof.jpg", "London",
+		"078852218453", "The Barfly champions cool and upcoming talent, making it a destination for music fans and partygoers alike", "V", "www.barfly.co.uk")
 	barfly_venue = add_venue(barfly_profile, "49 Chalk Farm Road", "NW1 8AN")
 
 	# Adding an event for Crappy Maths LT
@@ -88,7 +88,7 @@ def populate():
 
 	# Adding an event for GUU
 	guu1_event = add_event(guu_venue, "-", "Daft Friday", date(2016,12,16),
-		time(20,00,00), time(08,00,00), "Membership for Life", "12 hours of fun in finest black-tie.")
+		time(19,00,00), time(07,00,00), "Membership for Life", "12 hours of fun in finest black-tie.")
 
 	# Adding an event for GUU
 	guu2_event = add_event(guu_venue, "-", "Sessions @ The Well", date(2016,3,31),
