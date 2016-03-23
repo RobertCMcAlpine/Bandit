@@ -53,7 +53,11 @@
 			<li role="presentation"><a href="/bandit/venues/">Venues</a></li>
 			{% if band_notifications or venue_notifications %}
         	<!-- User is logged in -->
-				<li role="presentation"><a href="">Profile</a></li>
+        		{% if band_notifications %}
+					<li role="presentation"><a href="/bandit/band/{{ user_slug }}">Profile</a></li>
+        		{% elif venue_notifications %}
+        			<li role="presentation"><a href="/bandit/venue/{{ user_slug }}">Profile</a></li>
+        		{% endif %}
 				<li class="dropdown">	
 			        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-bell"></span> Notifications
 			        <span class="caret"></span></a>
