@@ -49,8 +49,7 @@
 			<li role="presentation"><a href="/bandit/events/">Events</a></li>
 			<li role="presentation"><a href="/bandit/bands/">Bands</a></li>
 			<li role="presentation"><a href="/bandit/venues/">Venues</a></li>
-			<li role="presentation"><a href="#login_form" rel="modal:open">Messages</a></li>
-        	{% if band_notifications or venue_notifications %}
+			{% if band_notifications or venue_notifications %}
         	<!-- User is logged in -->
 				<li role="presentation"><a href="">Profile</a></li>
 				<li class="dropdown">	
@@ -79,7 +78,7 @@
 			    <li role="presentation"><a href="/bandit/logout/">Log out</a></li>
 			{% else %}
 			<!-- User is NOT logged in -->
-				<li role="presentation"><a href="/bandit/login/">Log in</a></li>
+				<li role="presentation"><a href="#login_form" rel="modal:open">Log in</a></li>
 			{% endif %}
 		</ul>
 	</div>
