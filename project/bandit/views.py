@@ -10,16 +10,6 @@ from datetime import date,time
 from django.core.mail import send_mail
 
 
-def index(request):
-    # Query the database for a list of ALL categories currently stored.
-    # Order the categories by no. likes in descending order.
-    # Retrieve the top 5 only - or all if less than 5.
-    # Place the list in our context_dict dictionary which will be passed to the template engine.
-    
-    # Render the response and send it back!
-    return render(request, 'bandit/index.html')
-
-
 def register(request):
     
     # A boolean value for telling the template whether the registration was successful.
@@ -134,34 +124,77 @@ def user_logout(request):
     logout(request)
     
     # Take the user back to the homepage.
-    return HttpResponseRedirect('/bandit/')
+    #return HttpResponseRedirect('/bandit/')
+    return index(request)
 
 
 
 
 # Should be called by all the other views!
-@login_required
+#@login_required
 def get_venue_notifications(request):
-    try:
-        # Is the user a venue?
-        venue = Venue.objects.get(profile__user=request.user)
-        new_requests = Request.objects.filter(venue=venue, seen=False).order_by('request_date')
-        return new_requests
+    if request.user.is_authenticated():
+        try:
+            # Is the user a venue?
+            venue = Venue.objects.get(profile__user=request.user)
+            new_requests = Request.objects.filter(event__venue=venue, seen=False).order_by('request_date')
+            if not new_requests:
+                return "No notifications."
+            return new_requests
 
-    except Venue.DoesNotExist:
+        except Venue.DoesNotExist:
+            pass
+    else:
         return None
+
 
 # Should be called by all the other views!
-@login_required
+#@login_required
 def get_band_notifications(request):
-    try:
-        # Is the user a band?
-        band = Band.objects.get(profile__user=request.user)
-        new_accepted_events = Event.objects.filter(band=band, seen=False)
-        return new_accepted_events
+    if request.user.is_authenticated():
+        try:
+            # Is the user a band?
+            band = Band.objects.get(profile__user=request.user)
+            new_accepted_events = Event.objects.filter(band=band, seen=False)
+            if not new_accepted_events:
+                return "No notifications."
+            return new_accepted_events
 
-    except Band.DoesNotExist:
+        except Band.DoesNotExist:
+            pass
+    else:
         return None
+
+
+def index(request):
+    context_dict = {}
+
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
+
+    # Is the user a venue?
+    if venue_notifications:
+        context_dict['venue_notifications'] = venue_notifications
+
+    # Is the user a band?
+    if band_notifications:
+        context_dict['band_notifications'] = band_notifications
+
+    # Retrieve the 5 newest bands.
+    new_bands = Band.objects.order_by('-id')[:5]
+    context_dict['new_bands'] = new_bands
+
+    # Retrieve the 5 newest venues.
+    new_venues = Venue.objects.order_by('-id')[:5]
+    context_dict['new_venues'] = new_venues
+
+    # Retrieve 5 upcoming events.
+    today = date.today()
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:5]
+    context_dict['upcoming_events'] = upcoming_events
+
+    # Render the response and send it back!
+    return render(request, 'bandit/index.html', context_dict)
 
 
 def band(request, band_profile_name_slug):
@@ -239,6 +272,7 @@ def event(request, venue_profile_name_slug, event_date_slug):
         # Can we find an event of that venue for that date?
         # If we can't, the .get() method raises a DoesNotExist exception.
         event = Event.objects.get(slug=event_date_slug, venue=venue)
+        print event
         context_dict['event'] = event
         context_dict['event_name'] = event.name
 
@@ -246,6 +280,7 @@ def event(request, venue_profile_name_slug, event_date_slug):
         # Is the user a venue?
         if venue_notifications:
             context_dict['venue_notifications'] = venue_notifications
+
             # If the user is the venue-owner of the event, show the list of requests
             if venue.profile.user == request.user:
                 # Retrieve the requests for this event.
@@ -590,39 +625,29 @@ def venues(request):
     return render(request, 'bandit/venues.html', context_dict)
 
 def search(request):
+    context_dict = {}
+
     # If the request is a HTTP POST, try to pull out the relevant information.
-    if request.method == "POST":
+    if request.method == "GET":
         # Gather the query terms provided by the user
-        query_terms = request.POST.get('query_terms')
+        query_terms = request.GET.get('query_terms')
+
+        print query_terms
 
         # Search for bands where the name matches the query terms
-        bands = Band.objects.filter(profile__name=query_terms).order_by('profile__name')
+        bands = Band.objects.filter(profile__name__icontains=query_terms).order_by('profile__name')
+        context_dict['bands'] = bands
 
-        # Use Django's machinery to attempt to see if the username/password
-        # combination is valid - a User object is returned if it is.
-        user = authenticate(username=username, password=password)
+        # Search for venues where the name matches the query terms
+        venues = Venue.objects.filter(profile__name__icontains=query_terms).order_by('profile__name')
+        context_dict['venues'] = venues
 
-        # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
-        # with matching credentials was found.
-        if user:
-            # Is the account active? It could have been disabled...
-            if user.is_active:
-                # If the account is valid and active, we can log the user in.
-                # We'll send the user back to the homepage.
-                login(request, user)
-                return HttpResponseRedirect('/rango')
-            else:
-                # An inactive account was used - no logging in!
-                return HttpResponse("Your Rango account is disabled.")
-        else:
-            # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+        # Search for events where the name matches the query terms
+        events = Event.objects.filter(name__icontains=query_terms).order_by('name')
+        context_dict['events'] = events
 
-    # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
-    else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
-        return render(request, 'rango/login.html', {})
+        context_dict['query_terms'] = query_terms
+
+        # Return the results
+        return render(request, 'bandit/search.html', context_dict)
+
