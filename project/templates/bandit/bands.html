@@ -4,7 +4,7 @@
 
 {% block content_block %}
         {% if band_list %}
-            <h1>Bands</h1>
+            <h1 id=h-reg>Bands</h1>
             <ul>
                 {% for band in band_list %}
                     <li><h4><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></h4></li>

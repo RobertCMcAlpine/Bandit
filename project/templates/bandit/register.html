@@ -10,33 +10,38 @@
         {% else %}
 		<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<h1>Register with Bandit</h1>
+		<h1 id=h-reg> Register with Bandit</h1>
 		</div>
 		</div>
-        <div class="row">
-		<div class="col-md-6">
-        <form class=".control-label" id="user_form" data-toggle="validator" method="post" action="/bandit/register/" enctype="multipart/form-data">
-                
-            {% csrf_token %}
-            <div class="form-group">
-            <!-- Display each form. The as_p method wraps each element in a paragraph
-             (<p>) element. This ensures each element appears on a new line,
-             making everything look neater. -->
-            {{ user_form.as_p }}
-			</div>
-			
-			<div class="form-group">
-            {{ profile_form.as_p }}
+		<div class="col-md-12">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="django-form">
+                        <div id="contentBox">
+                            <div class="well">
+                                <form class=".control-label" id="user_form" data-toggle="validator" method="post" action="/bandit/register/" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                    <!-- Display each form. The as_p method wraps each element in a paragraph
+                                    (<p>) element. This ensures each element appears on a new line,
+                                    making everything look neater. -->
+                                    {{ user_form.as_p }}
+                                    </div>
+                                    <div class="form-group">
+                                    {{ profile_form.as_p }}
+                                    </div>
+                                    <!-- Provide a button to click to submit the form. -->
+                                    <input class="btn btn-primary" id="btn-reg" type="submit" name="submit" value="Register" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- Provide a button to click to submit the form. -->
-            <input class="btn btn-primary" type="submit" name="submit" value="Register" />
-        </form>
+        </div>
 		</div>
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet aliquam augue. Pellentesque non eros erat. Etiam eget nulla sed arcu blandit convallis</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet aliquam augue. Pellentesque non eros erat. Etiam eget nulla sed arcu blandit convallis</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet aliquam augue. Pellentesque non eros erat. Etiam eget nulla sed arcu blandit convallis</p>
-		</div>
+    
 		</div>
         {% endif %}
 		</div>
