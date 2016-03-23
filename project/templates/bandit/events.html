@@ -4,8 +4,11 @@
 
 {% block content_block %}
         {% if event_list %}
+		<div class="container-fluid eve">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="row">
             <h1 id=h-reg>Events</h1>
-            <ul>
+            <ul class="list-group">
                 {% for event in event_list %}
                     <li><h4><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.start_time }}</a></h4></li>
                     <p> Venue: <a href="/bandit/venue/{{ event.venue.profile.slug }}">{{ event.venue.profile.name }}</a> </p>
@@ -13,6 +16,9 @@
                     <hr></hr>
                 {% endfor %}
             </ul>
+			</div>
+			</div>
+			</div>
         {% else %}
             No events.
         {% endif %}

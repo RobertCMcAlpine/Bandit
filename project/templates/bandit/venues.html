@@ -4,8 +4,11 @@
 
 {% block content_block %}
         {% if venue_list %}
+		<div class="container-fluid eve">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="row">
             <h1 id=h-reg>Venues</h1>
-            <ul>
+            <ul class="list-group">
                 {% for venue in venue_list %}
                     <li><h4><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a><h4></li>
                      <p> Address: {{venue.address}} </p>
@@ -14,6 +17,9 @@
                      <hr></hr>
                 {% endfor %}
             </ul>
+			</div>
+			</div>
+		</div>
         {% else %}
             No venues.
         {% endif %}

@@ -3,7 +3,6 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content_block %}
-<!DOCTYPE html>
         {% if venue_form and profile_form %}
             <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -11,11 +10,11 @@
             </div>
             </div>
             <div class="col-md-12">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="django-form">
-                            <div id="contentBox">
-                                <div class="well">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="django-form">
+                        <div id="contentBox">
+                            <div class="well">
                                     <form id="edit_venue_profile_form" enctype="multipart/form-data" method="post" action="/bandit/venue/{{ venue_profile_name_slug }}/edit/">
 
                                         {% csrf_token %}
