@@ -138,6 +138,8 @@ def get_venue_notifications(request):
             # Is the user a venue?
             venue = Venue.objects.get(profile__user=request.user)
             new_requests = Request.objects.filter(event__venue=venue, seen=False).order_by('request_date')
+            if not new_requests:
+                return "No notifications."
             return new_requests
 
         except Venue.DoesNotExist:
@@ -154,6 +156,8 @@ def get_band_notifications(request):
             # Is the user a band?
             band = Band.objects.get(profile__user=request.user)
             new_accepted_events = Event.objects.filter(band=band, seen=False)
+            if not new_accepted_events:
+                return "No notifications."
             return new_accepted_events
 
         except Band.DoesNotExist:
