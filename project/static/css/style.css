@@ -79,6 +79,16 @@ top:6px;
 background:#337ab7;
 }
 
+hr
+{
+color:#337ab7;
+border: none;
+height: 2px;
+/* Set the hr color */
+color: #337ab7; /* old IE */
+background-color: #337ab7; /* Modern Browsers */
+}
+
 .row
 {
 width:80%;
