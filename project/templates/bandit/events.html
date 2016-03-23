@@ -7,9 +7,9 @@
             <h1>Events</h1>
             <ul>
                 {% for event in event_list %}
-                    <li><p><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.start_time }}</a></p></li>
-                    <p> venue: {{ event.venue.profile.name }} </p>
-                    <p> date: {{ event.date }} </p>
+                    <li><h4><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{ event.slug }}">{{ event.name }} - {{ event.date }}, {{ event.start_time }}</a></h4></li>
+                    <p> Venue: <a href="/bandit/venue/{{ event.venue.profile.slug }}">{{ event.venue.profile.name }}</a> </p>
+                    <p> Date: {{ event.date }} </p>
                     <hr></hr>
                 {% endfor %}
             </ul>
