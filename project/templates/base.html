@@ -39,21 +39,41 @@
 	</form>
 	<div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
 		<ul class="nav nav-pills">
-			<li role="presentation" ><a href="#">Home</a></li>
-			<li role="presentation"><a href="">Profile</a></li>
-			<li role="presentation"><a href="">Messages</a></li>
-			<li role="presentation"><a href="">Events</a></li>
-			<li role="presentation"><a href="">Bands</a></li>
-			<li class="dropdown">
-			
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-bell"></span> Notifications
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Some notification shit</a></li>
-          <li><a href="#">Such html</a></li>
-          <li><a href="#">Much Css</a></li>
-        </ul>
-      </li>
+			<li role="presentation" ><a href="/bandit/">Home</a></li>
+			<li role="presentation"><a href="/bandit/events/">Events</a></li>
+			<li role="presentation"><a href="/bandit/bands/">Bands</a></li>
+			<li role="presentation"><a href="/bandit/venues/">Venues</a></li>
+        	{% if band_notifications or venue_notifications %}
+        	<!-- User is logged in -->
+				<li role="presentation"><a href="">Profile</a></li>
+				<li class="dropdown">	
+			        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-bell"></span> Notifications
+			        <span class="caret"></span></a>
+			        <ul class="dropdown-menu">
+			        	{% if band_notifications %}
+			        		{% if band_notifications == "No notifications." %}
+			        			<li>No notifications.</li>
+			        		{% else %}
+				        		{% for event in band_notifications %}
+							        <li><a href="/bandit/venue/{{ event.venue.profile.slug}}/event/{{ event.slug }}">Your request for {{ event.name }} has been accepted!</a></li>
+						        {% endfor %}
+						    {% endif %}
+					    {% else %}
+			        		{% if venue_notifications == "No notifications." %}
+			        			<li>No notifications.</li>
+			        		{% else %}
+				        		{% for request in event_notifications %}
+							        <li><a href="/bandit/venue/{{ request.event.venue.profile.slug}}/event/{{ request.event.slug }}/request/{{ request.band.profile.slug }}">{{ request.band.profile.name }} sent a request for {{ request.event.name }}.</a></li>
+						        {% endfor %}
+						    {% endif %}
+					    {% endif %}
+			        </ul>
+			    </li>
+			    <li role="presentation"><a href="/bandit/logout/">Log out</a></li>
+			{% else %}
+			<!-- User is NOT logged in -->
+				<li role="presentation"><a href="/bandit/login/">Log in</a></li>
+			{% endif %}
 		</ul>
 	</div>
 	</div>
