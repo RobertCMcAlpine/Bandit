@@ -65,7 +65,7 @@
 			        			<li class="list-group-item">No notifications.</li>
 			        		{% else %}
 				        		{% for event in band_notifications %}
-							        <li class="list-group-item"><a href="/bandit/venue/{{ event.venue.profile.slug}}/event/{{ event.slug }}">Your request for {{ event.name }} has been accepted!</a></li>
+							        <li class="list-group-item"><a rel="modal:open" href="/bandit/venue/{{ event.venue.profile.slug}}/event/{{ event.slug }}">Your request for {{ event.name }} has been accepted!</a></li>
 						        {% endfor %}
 						    {% endif %}
 					    {% else %}
@@ -73,7 +73,7 @@
 			        			<li class="list-group-item">No notifications.</li>
 			        		{% else %}
 				        		{% for request in venue_notifications %}
-							        <li class="list-group-item"><a href="/bandit/venue/{{ request.event.venue.profile.slug}}/event/{{ request.event.slug }}/request/{{ request.band.profile.slug }}">{{ request.band.profile.name }} sent a request for {{ request.event.name }}.</a></li>
+							        <li class="list-group-item"><a rel="modal:open"href="/bandit/venue/{{ request.event.venue.profile.slug}}/event/{{ request.event.slug }}/request/{{ request.band.profile.slug }}">{{ request.band.profile.name }} sent a request for {{ request.event.name }}.</a></li>
 						        {% endfor %}
 						    {% endif %}
 					    {% endif %}

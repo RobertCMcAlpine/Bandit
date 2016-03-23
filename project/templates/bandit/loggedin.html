@@ -28,47 +28,54 @@
                     <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>
             </div>
-            <div class="mainPitch">
-                <div class="container">
-                    <div class="row">
-                            <div id="contentBox">
-                                <div id="column1">
-                                    <div class="well">
-                                        NEW BANDS
-                                        <ul class="list-group requests">
-                                            {% for band in new_bands %}
-                                            <li class="list-group-item"><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                                
-                                <div id="column2">
-                                    <div class="well">
-                                        NEW EVENTS
-                                        <ul class="list-group requests">
-                                            {% for event in upcoming_events %}
-                                            <li class="list-group-item"><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{event.slug}}">{{ event.name }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                                
-                                <div id="column3">
-                                    <div class="well">
-                                        NEW VENUES
-                                        <ul class="list-group requests">
-                                            {% for venue in new_venues %}
-                                            <li class="list-group-item"><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
             </div>
-        </div>
-    </div>
-{% endblock %}
+			
+                
+           <div class="container-fluid">
+<div class="row">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="mainPitch">
+      <div class="container">
+          
+
+             
+                  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                      <div class="well">
+                          <h3> New Bands </h3> 
+                          <ul class="list-group requests">
+                              {% for band in new_bands %}
+                              <li class="list-group-item"><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                      <div class="well">
+                        <h3>  New Events </h3>
+                          <ul class="list-group requests">
+                              {% for event in upcoming_events %}
+                              <li class="list-group-item"><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{event.slug}}">{{ event.name }}</a></li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                      <div class="well">
+                         <h3>New Venues</h3>
+                          <ul class="list-group requests">
+                              {% for venue in new_venues %}
+                              <li class="list-group-item"><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a></li>
+                              {% endfor %}
+                          </ul>
+                          
+                      </div>
+                  </div>
+              </div>
+        
+</div>
+</div>
+</div>
+</div>    
+   {% endblock %}
