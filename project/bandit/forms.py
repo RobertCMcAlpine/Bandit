@@ -19,7 +19,7 @@ class ProfileForm(forms.ModelForm):
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('name', 'profile_picture', 'city', 'phone_number', 'description')
+        fields = ('name', 'profile_picture', 'city', 'phone_number', 'description', 'website')
 
 class EventForm(forms.ModelForm):
     name = forms.CharField(max_length=128, help_text="Please enter the name of the event:")
