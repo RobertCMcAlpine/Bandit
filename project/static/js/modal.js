@@ -1,5 +1,5 @@
 /*
-    A simple jQuery modal (http://github.com/kylefox/jquery-modal)
+    A simple jQuery jmodal (http://github.com/kylefox/jquery-jmodal)
     Version 0.7.0
 */
 (function($) {
@@ -41,7 +41,7 @@
       } else {
         this.$elm = $('<div>');
         this.$body.append(this.$elm);
-        remove = function(event, modal) { modal.elm.remove(); };
+        remove = function(event, jmodal) { jmodal.elm.remove(); };
         this.showSpinner();
         el.trigger($.jmodal.AJAX_SEND);
         $.get(target).done(function(html) {
@@ -56,7 +56,7 @@
           el.trigger($.jmodal.AJAX_FAIL);
           var current = getCurrent();
           current.hideSpinner();
-          modals.pop(); // remove expected modal from the list
+          modals.pop(); // remove expected jmodal from the list
           el.trigger($.jmodal.AJAX_COMPLETE);
         });
       }
@@ -80,7 +80,7 @@
       } else {
         this.show();
       }
-      $(document).off('keydown.modal').on('keydown.modal', function(event) {
+      $(document).off('keydown.jmodal').on('keydown.jmodal', function(event) {
         var current = getCurrent();
         if (event.which == 27 && current.options.escapeClose) current.close();
       });
@@ -96,13 +96,13 @@
       this.unblock();
       this.hide();
       if (!$.jmodal.isActive())
-        $(document).off('keydown.modal');
+        $(document).off('keydown.jmodal');
     },
 
     block: function() {
       this.$elm.trigger($.jmodal.BEFORE_BLOCK, [this._ctx()]);
       this.$body.css('overflow','hidden');
-      this.$blocker = $('<div class="jquery-modal blocker current"></div>').appendTo(this.$body);
+      this.$blocker = $('<div class="jquery-jmodal blocker current"></div>').appendTo(this.$body);
       selectCurrent();
       if(this.options.doFade) {
         this.$blocker.css('opacity',0).animate({opacity: 1}, this.options.fadeDuration);
@@ -126,7 +126,7 @@
     show: function() {
       this.$elm.trigger($.jmodal.BEFORE_OPEN, [this._ctx()]);
       if (this.options.showClose) {
-        this.closeButton = $('<a href="#close-modal" rel="modal:close" class="close-modal ' + this.options.closeClass + '">' + this.options.closeText + '</a>');
+        this.closeButton = $('<a href="#close-jmodal" rel="jmodal:close" class="close-jmodal ' + this.options.closeClass + '">' + this.options.closeText + '</a>');
         this.$elm.append(this.closeButton);
       }
       this.$elm.addClass(this.options.modalClass).appendTo(this.$blocker);
@@ -180,49 +180,49 @@
     return current.$elm;
   };
 
-  // Returns if there currently is an active modal
+  // Returns if there currently is an active jmodal
   $.jmodal.isActive = function () {
     return modals.length > 0;
   }
 
   $.jmodal.defaults = {
     closeExisting: true,
-    escapeClose: false,
-    clickClose: false,
-    closeText: 'Close',
+    escapeClose: true,
+    clickClose: true,
+    closeText: 'Click to Close',
     closeClass: '',
-    modalClass: "modal",
+    modalClass: "jmodal",
     spinnerHtml: null,
-    showSpinner: true,
-    showClose: false,
+    showSpinner: false,
+    showClose: true,
     fadeDuration: null,   // Number of milliseconds the fade animation takes.
-    fadeDelay: 1.0        // Point during the overlay's fade-in that the modal begins to fade in (.5 = 50%, 1.5 = 150%, etc.)
+    fadeDelay: 1.0        // Point during the overlay's fade-in that the jmodal begins to fade in (.5 = 50%, 1.5 = 150%, etc.)
   };
 
   // Event constants
-  $.jmodal.BEFORE_BLOCK = 'modal:before-block';
-  $.jmodal.BLOCK = 'modal:block';
-  $.jmodal.BEFORE_OPEN = 'modal:before-open';
-  $.jmodal.OPEN = 'modal:open';
-  $.jmodal.BEFORE_CLOSE = 'modal:before-close';
-  $.jmodal.CLOSE = 'modal:close';
-  $.jmodal.AFTER_CLOSE = 'modal:after-close';
-  $.jmodal.AJAX_SEND = 'modal:ajax:send';
-  $.jmodal.AJAX_SUCCESS = 'modal:ajax:success';
-  $.jmodal.AJAX_FAIL = 'modal:ajax:fail';
-  $.jmodal.AJAX_COMPLETE = 'modal:ajax:complete';
+  $.jmodal.BEFORE_BLOCK = 'jmodal:before-block';
+  $.jmodal.BLOCK = 'jmodal:block';
+  $.jmodal.BEFORE_OPEN = 'jmodal:before-open';
+  $.jmodal.OPEN = 'jmodal:open';
+  $.jmodal.BEFORE_CLOSE = 'jmodal:before-close';
+  $.jmodal.CLOSE = 'jmodal:close';
+  $.jmodal.AFTER_CLOSE = 'jmodal:after-close';
+  $.jmodal.AJAX_SEND = 'jmodal:ajax:send';
+  $.jmodal.AJAX_SUCCESS = 'jmodal:ajax:success';
+  $.jmodal.AJAX_FAIL = 'jmodal:ajax:fail';
+  $.jmodal.AJAX_COMPLETE = 'jmodal:ajax:complete';
 
-  $.fn.modal = function(options){
+  $.fn.jmodal = function(options){
     if (this.length === 1) {
       new $.jmodal(this, options);
     }
     return this;
   };
 
-  // Automatically bind links with rel="modal:close" to, well, close the modal.
-  $(document).on('click.modal', 'a[rel="modal:close"]', $.jmodal.close);
-  $(document).on('click.modal', 'a[rel="modal:open"]', function(event) {
+  // Automatically bind links with rel="jmodal:close" to, well, close the jmodal.
+  $(document).on('click.jmodal', 'a[rel="jmodal:close"]', $.jmodal.close);
+  $(document).on('click.jmodal', 'a[rel="jmodal:open"]', function(event) {
     event.preventDefault();
-    $(this).modal();
+    $(this).jmodal();
   });
 })(jQuery);
