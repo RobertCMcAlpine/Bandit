@@ -4,7 +4,7 @@
 
 {% block content_block %}
         {% if venue_list %}
-            <h1>Venues</h1>
+            <h1 id=h-reg>Venues</h1>
             <ul>
                 {% for venue in venue_list %}
                     <li><h4><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a><h4></li>

@@ -13,24 +13,10 @@ padding-top:80px;
 padding-bottom:60px;
 }
 
-
-.navig
+.navbar
 {
-top:10px;
-}
-.nav
-{
-float:right;
-min-width:100px;
-margin-top:2px;
-min-height:50px;
-}
-.navbar-brand
-{
-height: auto;
-max-width: 100%;
-display: block;
-overflow: visible;
+padding-left:5px;
+padding-right:5px;
 }
 
 .navbar-brand img
@@ -38,10 +24,8 @@ overflow: visible;
 height: 60px;
 width: 120px;
 position: relative;
-bottom: 22px;
 right: 5px;
 }
-
 
 .navbar-default .navbar-brand
 {
@@ -50,12 +34,9 @@ color:#337ab7;
 
 .navbar-fixed-top
 {
-padding-top:10px;
 background:rgba(255, 255, 255,0.8) ;
 box-shadow:none;
 border:none;
-border:solid 1px #ecf0f1;
-min-height:80px;
 }
 
 .navbar-fixed-top:hover
@@ -69,24 +50,17 @@ background:rgba(255, 255, 255,1);
 color:#fff;
 }
 
-.searchbar
+#search_form
 {
-top:6px;
+max-width:600px;
+min-width:120px;
+margin-top:30px;
 }
 
-.searchbar .btn
+
+#search_form .btn
 {
 background:#337ab7;
-}
-
-hr
-{
-color:#337ab7;
-border: none;
-height: 2px;
-/* Set the hr color */
-color: #337ab7; /* old IE */
-background-color: #337ab7; /* Modern Browsers */
 }
 
 .row
@@ -100,7 +74,7 @@ margin-right:auto;
 {
 color:#34495e;
 }
-
+clear:both;
 #myCarousel
 {
 position:relative;
@@ -187,21 +161,20 @@ margin-right:auto;
 
 .container .row
 {
-    
     margin-left:auto;
     margin-right:auto;
 }
 
 #myCarouselA
 {
-    .carousel { z-index: -99; } /* keeps this behind all content */
+   
     position:fixed;
     text-align:center;
     margin-left:auto;
     margin-right:auto;
     margin-bottom:20px;
 }
-
+ .carousel { z-index: -99; } /* keeps this behind all content */
 .carousel-inner img
 {
     max-height:500px;
@@ -213,15 +186,22 @@ h1
 margin-bottom:30px;
 }
 
-
-.notifications-red
+.navbar .container
 {
-    color:red;
+width:80%;
+margin-left:auto;
+margin-right:auto;
+padding-left:40px;
+padding-right:40px;
 }
 
-.carousel-font
+
+.navbar-default .navbar-nav > li > a
 {
-    font-family: 'Open Sans Condensed', sans-serif;
-    font-weight: bold;
-    font-size: 1.6em;
+color:#337ab7;
+}
+
+.nav
+{
+margin-top:30px;
 }
