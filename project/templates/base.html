@@ -11,12 +11,13 @@
  <link rel="stylesheet" href={% static "css/bootstrap-theme.css" %} type="text/css" />
  <link rel="stylesheet" href={% static "css/bootstrap-theme.min.css" %} type="text/css" />
  <link rel="stylesheet" href={% static "css/style.css" %} type="text/css"/>
- <link rel="stylesheet" href={% static "js/jquery.modal.css" %} type="text/css" media="screen" />
+ <link rel="stylesheet" href={% static "css/modal.css" %} type="text/css" media="screen" />
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src={% static "js/bootstrap.min.js" %}></script>
   <script src={% static "js/slider.js" %}></script>
   <script src={% static "js/bandit-jquery.js" %}></script>
-  <script src={% static "js/jquery.modal.min.js" %}></script>
+  <script src={% static "js/modal.min.js" %}></script>
+  <script src={% static "js/modal.js" %}></script>
 
   
 </head>
@@ -27,7 +28,7 @@
 <div class="row">
 	
 	<div class="hidden-xs hidden-sm col-md-2 col-lg-2">
-	<a class="navbar-brand" href="#">
+	<a class="navbar-brand" href="/bandit/">
 		<img alt= "Brand" src="{% static 'images/logo.png' %}"/>
 		</a>
 	</div>
@@ -48,8 +49,7 @@
 			<li role="presentation"><a href="/bandit/events/">Events</a></li>
 			<li role="presentation"><a href="/bandit/bands/">Bands</a></li>
 			<li role="presentation"><a href="/bandit/venues/">Venues</a></li>
-			<li role="presentation"><a href="#login_form" rel="modal:open">Messages</a></li>
-        	{% if band_notifications or venue_notifications %}
+			{% if band_notifications or venue_notifications %}
         	<!-- User is logged in -->
 				<li role="presentation"><a href="">Profile</a></li>
 				<li class="dropdown">	
@@ -78,7 +78,7 @@
 			    <li role="presentation"><a href="/bandit/logout/">Log out</a></li>
 			{% else %}
 			<!-- User is NOT logged in -->
-				<li role="presentation"><a href="/bandit/login/">Log in</a></li>
+				<li role="presentation"><a href="#login_form" rel="modal:open">Log in</a></li>
 			{% endif %}
 		</ul>
 	</div>

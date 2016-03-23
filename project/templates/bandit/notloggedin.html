@@ -1,10 +1,4 @@
-{% extends 'base.html' %}
-
 {% load staticfiles %}
-
-{% block title %}Welcome{% endblock %}
-
-{% block content_block %}
 <div class="container-fluid">
 <div class="row">
 <div class="hidden-xs col-sm-12 col-md-12 col-lg-12">
@@ -43,7 +37,7 @@
    </div>
 
     <!-- Left and right controls -->
-    <a class="left carousel-control" href="" role="button">
+    <a class="left carousel-control" href="#" role="button">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
@@ -60,9 +54,10 @@
       <h2>Something</h2>
     </div>
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-      <h2>Log In</h2>
-	  
-      <form role="form" id="login_form" method="post" action="/bandit/login/">
+     
+	  <div class="hidden">
+	  <div class="popUp" id="login_form">
+	   <form role="form" method="post" action="/bandit/login/">
         {% csrf_token %}
 		<div class="form-group">
         <label>Username:</label>
@@ -75,12 +70,20 @@
 		<div class="form-group">
 		<input class="form-control btn btn-primary" type="submit" value="Submit" />
 		</div>
+		<p> Do you need to register ? Nae bother , click <a href="/register/">here</a></p>
       </form>
-	   <p>New to BANDit and need an account? Register <a href="/bandit/register/">Here</a>!</p>
 	  </div>
+	  </div>
+	 </div>
+	  
+	    
+	  
+	  
+	    
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
       <h2>Something</h2>
     </div>
-	 </div>
-  </div>
-{% endblock %}
+	</div>
+	</div>
+
+  
