@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+    {% extends 'base.html' %}
 
 {% block title %}Search: {{ query_terms }}{% endblock %}
 
@@ -9,37 +9,43 @@
             <h2>Search Results</h2>
                 <div id="column1">
                     <div class="well">
-                        BANDS
+                        <h4>BANDS</h4>
                         {% if bands %}
                             <ul class="list-group requests">
                                 {% for band in bands %}
                                     <li class="list-group-item"><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></li>
                                 {% endfor %}
                             </ul>
+                        {% else %}
+                            No bands found.
                         {% endif %}
                     </div>
                 </div>
                 <div id="column2">
                     <div class="well">
-                        VENUES
+                        <h4>VENUES</h4>
                         {% if venues %}
                             <ul class="list-group requests">
                                 {% for venue in venues %}
                                     <li class="list-group-item"><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a></li>
                                 {% endfor %}
                             </ul>
+                        {% else %}
+                            No venues found.
                         {% endif %}
                     </div>
                 </div>
                 <div id="column3">
                     <div class="well">
-                        EVENTS
+                        <h4>EVENTS</h4>
                         {% if events %}
                             <ul class="list-group requests">
                             {% for event in events %}
                                 <li class="list-group-item"><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{ event.slug }}">{{ event.name }}</a></li>
                             {% endfor %}
                             </ul>
+                        {% else %}
+                            No events found.
                         {% endif %}
                     </div>
                     </div>
