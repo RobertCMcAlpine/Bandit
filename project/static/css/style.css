@@ -202,3 +202,11 @@ h1
 {
 margin-bottom:30px;
 }
+
+.carousel-font
+{
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 1.6em;
+
+}
