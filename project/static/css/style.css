@@ -27,10 +27,19 @@ min-height:50px;
 }
 .navbar-brand
 {
-padding-top:12px;
-padding-left:15px;
-padding-bottom:0px;
-font-size:1.8em;
+height: auto;
+max-width: 100%;
+display: block;
+overflow: visible;
+}
+
+.navbar-brand img
+{
+height: 60px;
+width: 120px;
+position: relative;
+bottom: 22px;
+right: 5px;
 }
 .navbar-default .navbar-brand
 {
