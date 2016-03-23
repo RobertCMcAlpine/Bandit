@@ -14,16 +14,16 @@ def index(request):
     context_dict = {}
 
     # Retrieve the 5 newest bands.
-    new_bands = Band.objects.order_by('-id')[5]
+    new_bands = Band.objects.order_by('-id')[:5]
     context_dict['new_bands'] = new_bands
 
     # Retrieve the 5 newest venues.
-    new_venues = Venue.objects.order_by('-id')[5]
+    new_venues = Venue.objects.order_by('-id')[:5]
     context_dict['new_venues'] = new_venues
 
     # Retrieve 5 upcoming events.
     today = date.today()
-    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[5]
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:5]
     context_dict['upcoming_events'] = upcoming_events
 
     # Render the response and send it back!
