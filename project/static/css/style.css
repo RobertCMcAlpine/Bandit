@@ -275,5 +275,10 @@ margin-bottom:5px;
 #event_form input
 {
 clear:both;
-
 }
+
+.dropdown-menu li
+{
+color:#337ab7;
+}
+
