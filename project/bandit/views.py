@@ -125,7 +125,7 @@ def user_logout(request):
     
     # Take the user back to the homepage.
     #return HttpResponseRedirect('/bandit/')
-    return index(request)
+    return render(request, 'bandit/index.html', {})
 
 
 
@@ -180,6 +180,12 @@ def index(request):
     if band_notifications:
         context_dict['band_notifications'] = band_notifications
 
+    # Is the user authenticated?
+    # If so, add a link to the user's profile.
+    if request.user.is_authenticated():
+        profile = Profile.objects.get(user=request.user)
+        context_dict['user_slug'] = profile.slug
+
     # Retrieve the 5 newest bands.
     new_bands = Band.objects.order_by('-id')[:5]
     context_dict['new_bands'] = new_bands
@@ -220,7 +226,13 @@ def band(request, band_profile_name_slug):
         if venue_notifications:
             context_dict['venue_notifications'] = venue_notifications
 
-    except Band.DoesNotExist:
+        # Is the user authenticated?
+        # If so, add a link to the user's profile.
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            context_dict['user_slug'] = profile.slug
+
+    except (Band.DoesNotExist, Profile.DoesNotExist):
         pass
 
     return render(request, 'bandit/band.html', context_dict)
@@ -252,7 +264,13 @@ def venue(request, venue_profile_name_slug):
         if band_notifications:
             context_dict['band_notifications'] = band_notifications
 
-    except Venue.DoesNotExist:
+        # Is the user authenticated?
+        # If so, add a link to the user's profile.
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            context_dict['user_slug'] = profile.slug
+
+    except (Venue.DoesNotExist, Profile.DoesNotExist):
         pass
 
     return render(request, 'bandit/venue.html', context_dict)
@@ -307,7 +325,13 @@ def event(request, venue_profile_name_slug, event_date_slug):
                 # If so, set the 'seen' attribute to True.
                 event.seen=True
 
-    except (Event.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist):
+        # Is the user authenticated?
+        # If so, add a link to the user's profile.
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            context_dict['user_slug'] = profile.slug
+
+    except (Event.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist, Profile.DoesNotExist):
         pass
 
     return render(request, 'bandit/event.html', context_dict)
@@ -328,6 +352,12 @@ def request(request, venue_profile_name_slug, event_date_slug, band_profile_name
         # Can we find an event of that venue for that date?
         # If we can't, the .get() method raises a DoesNotExist exception.
         event = Event.objects.get(slug=event_date_slug, venue=venue)
+
+        # Is the user authenticated?
+        # If so, add a link to the user's profile.
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            context_dict['user_slug'] = profile.slug
 
         # Is the user a venue?
         if venue_notifications:
@@ -362,7 +392,7 @@ def request(request, venue_profile_name_slug, event_date_slug, band_profile_name
                 # We return a 403 (Forbidden)
                 raise PermissionDenied
 
-    except (Event.DoesNotExist, Band.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist):
+    except (Event.DoesNotExist, Band.DoesNotExist, Venue.DoesNotExist, Request.DoesNotExist, Profile.DoesNotExist):
         pass
 
     return render(request, 'bandit/request.html', context_dict)
@@ -382,8 +412,9 @@ def add_event(request, venue_profile_name_slug):
         # If not, context_dict will remain empty.
         if venue_notifications:
             # Is the user the the owner of this venue?
-            # If so, show him the form!
+            # If so, show the form!
             if venue.profile.user == request.user:
+                context_dict['user_slug'] = venue.profile.slug
                 context_dict['venue_notifications'] = venue_notifications
                 context_dict['venue_profile_name_slug'] = venue_profile_name_slug
                 # A HTTP POST?
@@ -433,6 +464,7 @@ def edit_band_profile(request, band_profile_name_slug):
 
         # Is the user the owner of this profile?
         if existing_band.profile.user == request.user:
+            context_dict['user_slug'] = existing_band.profile.slug
             if band_notifications:
                 context_dict['band_notifications'] = band_notifications
             # A HTTP POST?
@@ -483,6 +515,7 @@ def edit_venue_profile(request, venue_profile_name_slug):
 
         # Is the user the owner of this profile?
         if existing_venue.profile.user == request.user:
+            context_dict['user_slug'] = existing_venue.profile.slug
             if venue_notifications:
                 context_dict['venue_notifications'] = venue_notifications
             # A HTTP POST?
@@ -589,6 +622,12 @@ def events(request):
     if venue_notifications:
         context_dict['venue_notifications'] = venue_notifications
 
+    # Is the user authenticated?
+    # If so, add a link to the user's profile.
+    if request.user.is_authenticated():
+        profile = Profile.objects.get(user=request.user)
+        context_dict['user_slug'] = profile.slug
+
     today = date.today()
     event_list = Event.objects.filter(date__gte=today).order_by('date')
     context_dict['event_list'] = event_list
@@ -605,6 +644,12 @@ def bands(request):
     if venue_notifications:
         context_dict['venue_notifications'] = venue_notifications
 
+    # Is the user authenticated?
+    # If so, add a link to the user's profile.
+    if request.user.is_authenticated():
+        profile = Profile.objects.get(user=request.user)
+        context_dict['user_slug'] = profile.slug
+
     band_list = Band.objects.order_by('-profile__name')
     context_dict['band_list'] = band_list
     return render(request, 'bandit/bands.html', context_dict)
@@ -619,6 +664,12 @@ def venues(request):
         context_dict['band_notifications'] = band_notifications
     if venue_notifications:
         context_dict['venue_notifications'] = venue_notifications
+
+    # Is the user authenticated?
+    # If so, add a link to the user's profile.
+    if request.user.is_authenticated():
+        profile = Profile.objects.get(user=request.user)
+        context_dict['user_slug'] = profile.slug
 
     venue_list = Venue.objects.order_by('-profile__name')
     context_dict['venue_list'] = venue_list
@@ -637,6 +688,12 @@ def search(request):
     # Is the user a band?
     if band_notifications:
         context_dict['band_notifications'] = band_notifications
+
+    # Is the user authenticated?
+    # If so, add a link to the user's profile.
+    if request.user.is_authenticated():
+        profile = Profile.objects.get(user=request.user)
+        context_dict['user_slug'] = profile.slug
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == "GET":

@@ -7,10 +7,10 @@
             <h1>Venues</h1>
             <ul>
                 {% for venue in venue_list %}
-                    <li><p><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a><p></li>
-                     <p> address: {{venue.address}} </p>
-                     <p> postcode: {{venue.post_code}} </p>
-                     <p> tel: {{venue.profile.phone_number}} </p>
+                    <li><h4><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a><h4></li>
+                     <p> Address: {{venue.address}} </p>
+                     <p> Postcode: {{venue.post_code}} </p>
+                     <p> Tel: {{venue.profile.phone_number}} </p>
                      <hr></hr>
                 {% endfor %}
             </ul>

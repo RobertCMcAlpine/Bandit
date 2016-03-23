@@ -7,9 +7,9 @@
             <h1>Bands</h1>
             <ul>
                 {% for band in band_list %}
-                    <li><p><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></p></li>
-                    <p> genre: {{band.genre}} </p>
-                    <p> band members: {{band.number_of_members}} </p>
+                    <li><h4><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></h4></li>
+                    <p> Genre: {{band.genre}} </p>
+                    <p> Number of members: {{band.number_of_members}} </p>
                     <hr></hr>
                 {% endfor %}
             </ul>

@@ -23,6 +23,31 @@ def populate():
 		"02392561857", "You think you found love, but you're standing in The Pit...", "B", "www.mouse-rat.com")
 	andy_band = add_band(andy_profile, 3, "Rock")
 
+	#Adding Myron's band, Weird Sisters
+	myron_user = add_user("myron", "myron@wizard.com", "myron")
+	myron_profile = add_profile(myron_user, "Weird Sisters", "-", "London",
+		"05647234080", "Eccentric glam-rockers with wands", "B", "www.weird-sisters.com")
+	myron_band = add_band(myron_profile, 6, "Unclassifiable")
+
+	#Adding Ulysses' band, The Soggy Bottom Boys
+	ulysses_user = add_user("ulysses", "obrother@where.com", "ulysses")
+	ulysses_profile = add_profile(ulysses_user, "The Soggy Bottom Boys", "-", "Mississippi",
+		"01982477585", "Treasure, what treasure? We just want to sing!", "B", "www.soggy-bottom-boys.com")
+	ulysses_band = add_band(ulysses_profile, 3, "Folk")
+
+	#Adding Jake's band, The Blues Brothers
+	jake_user = add_user("jake", "bbros@mail.com", "jake")
+	jake_profile = add_profile(jake_user, "The Blues Brothers", "-", "Illinois",
+		"01982477585", "We may be a duo just now but we'll be back to a band of 10 soon!", "B", "www.blues-bros.com")
+	jake_band = add_band(jake_profile, 2, "Blues/R&B")
+
+	#Adding Nigel's band, Spinal Tap
+	nigel_user = add_user("nigel", "spinaltap@mail.com", "nigel")
+	nigel_profile = add_profile(nigel_user, "Spinal Tap", "-", "Edinburgh",
+		"0105769445", "We will turn it up to 11 and rock your event!", "B", "www.spinal-tap.com")
+	nigel_band = add_band(nigel_profile, 2, "Rock")
+
+
 	# Adding Crappy Maths LT Venue...
 	maths_user = add_user("david", "david@itech.com", "david")
 	maths_profile = add_profile(maths_user, "Crappy Maths Lecture Theatre",  "-", "Glasgow",
