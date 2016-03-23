@@ -4,8 +4,11 @@
 
 {% block content_block %}
         {% if band_list %}
+			<div class="container-fluid eve">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="row">
             <h1 id=h-reg>Bands</h1>
-            <ul>
+            <ul class="list-group">
                 {% for band in band_list %}
                     <li><h4><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></h4></li>
                     <p> Genre: {{band.genre}} </p>
