@@ -627,6 +627,17 @@ def venues(request):
 def search(request):
     context_dict = {}
 
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
+
+    # Is the user a venue?
+    if venue_notifications:
+        context_dict['venue_notifications'] = venue_notifications
+
+    # Is the user a band?
+    if band_notifications:
+        context_dict['band_notifications'] = band_notifications
+
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == "GET":
         # Gather the query terms provided by the user
