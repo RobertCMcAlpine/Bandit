@@ -60,6 +60,19 @@ def populate():
 		"02392561857", "Best pub in town.", "V", "www.lauraspub.co.uk")
 	laura_venue = add_venue(laura_profile, "7 Pub str", "G12 8AB")
 
+	# Adding GUU Venue...
+	guu_user = add_user("fergus", "fergus@guu.com", "fergus")
+	guu_profile = add_profile(guu_user, "Glasgow University Union",  "-", "Glasgow",
+		"02039096532", "Run by students for students", "V", "www.guu.co.uk")
+	guu_venue = add_venue(guu_profile, "University Of Glasgow", "G12 8AB")
+
+	# Adding Electric Circus Venue...
+	ec_user = ec_user("jerry", "jerry@ecircus.com", "jerry")
+	ec_profile = add_profile(ec_user, "Electric Circus",  "-", "Edinburgh",
+		"02039573343", "A rough exterior belies a slick and comfortably compact interior, with a capacity of 250", "V", "www.guu.co.uk")
+	ec_venue = add_venue(ec_profile, "35 Market Street", "EH1")
+
+	
 	# Adding an event for Crappy Maths LT
 	maths_event = add_event(maths_venue, leif_band, "ITECH Presentation", date(2016,3,23),
 		time(14,00,00), time(17,00,00), "An A1 in ITECH!", "The event of the year!")
