@@ -41,39 +41,36 @@
                                 
                                 <div id="column1">
                                     <div class="well">
-                                        NEARBY EVENTS
-                                        <ul style="list-style-type:none">
-                                            <li>Event1</li>
-                                            <li>Event2</li>
-                                            <li>Event3</li>
-                                            <li>Event4</li>
-                                            <li>Event5</li>
+                                        NEW BANDS
+        
+                                        
+                                        
+                                        <ul class="list-group requests">
+                                            {% for band in new_bands %}
+                                            <li class="list-group-item"><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></li>
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>
                                 
                                 <div id="column2">
                                     <div class="well">
-                                        UPCOMING EVENTS
-                                        <ul style="list-style-type:none">
-                                            <li>Event1</li>
-                                            <li>Event2</li>
-                                            <li>Event3</li>
-                                            <li>Event4</li>
-                                            <li>Event5</li>
+                                        NEW EVENTS
+                                        <ul class="list-group requests">
+                                            {% for event in upcoming_events %}
+                                            <li class="list-group-item"><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{event.slug}}">{{ event.name }}</a></li>
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>
                                 
                                 <div id="column3">
                                     <div class="well">
-                                        NEARBY VENUES
-                                        <ul style="list-style-type:none">
-                                            <li>Venue1</li>
-                                            <li>Venue2</li>
-                                            <li>Venue3</li>
-                                            <li>Venue4</li>
-                                            <li>Venue5</li>
+                                        NEW VENUES
+                                        <ul class="list-group requests">
+                                            {% for venue in new_venues %}
+                                            <li class="list-group-item"><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a></li>
+                                            {% endfor %}
                                         </ul>
                                         
                                     </div>
