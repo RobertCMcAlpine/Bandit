@@ -1,4 +1,9 @@
-	<div class="container-fluid">
+{% extends 'base.html' %}
+
+{% block title %}{{ venue.profile.name }}{% endblock %}
+
+{% block content_block %}
+<div class="container-fluid">
         {% if venue %}
 			<div class="row">
             <h1>{{ venue.profile.name }}</h1>
@@ -45,3 +50,4 @@
            <div class="alert alert-danger" role="alert"><h1> The specified venue {{ profile_name }} does not exist!</h1></div>
         {% endif %}
 		</div>
+{% endblock %}

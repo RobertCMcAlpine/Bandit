@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content_block %}
        <div class="container-fluid card">
 		{% if registered %}
         Bandit says: <strong>thank you for registering!</strong>
@@ -35,4 +40,4 @@
 		</div>
         {% endif %}
 		</div>
-   
+{% endblock %}
