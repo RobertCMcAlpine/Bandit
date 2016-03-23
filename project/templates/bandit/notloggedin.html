@@ -46,7 +46,55 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
- </div>
+  </div>
+</div>
+<div class="container-fluid">
+<div class="row">
+<div class="hidden-xs col-sm-12 col-md-12 col-lg-12">
+  <div class="mainPitch">
+      <div class="container">
+          <div class="row">
+              <div class="hidden-xs col-sm-12 col-md-12 col-lg-12">
+              <div id="contentBox">
+                  <div id="column1">
+                      <div class="well">
+                          NEW BANDS
+                          <ul class="list-group requests">
+                              {% for band in new_bands %}
+                              <li class="list-group-item"><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div id="column2">
+                      <div class="well">
+                          NEW EVENTS
+                          <ul class="list-group requests">
+                              {% for event in upcoming_events %}
+                              <li class="list-group-item"><a href="/bandit/venue/{{ event.venue.profile.slug }}/event/{{event.slug}}">{{ event.name }}</a></li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div id="column3">
+                      <div class="well">
+                          NEW VENUES
+                          <ul class="list-group requests">
+                              {% for venue in new_venues %}
+                              <li class="list-group-item"><a href="/bandit/venue/{{ venue.profile.slug }}">{{ venue.profile.name }}</a></li>
+                              {% endfor %}
+                          </ul>
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+</div>
 </div>
 
  <div class="row">
@@ -70,7 +118,7 @@
 		<div class="form-group">
 		<input class="form-control btn btn-primary" type="submit" value="Submit" />
 		</div>
-		<p> Do you need to register ? Nae bother , click <a href="/register/">here</a></p>
+		<p> Do you need to register ? Nae bother , click <a href="/bandit/register/">here</a></p>
       </form>
 	  </div>
 	  </div>
@@ -85,5 +133,3 @@
     </div>
 	</div>
 	</div>
-
-  
