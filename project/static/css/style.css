@@ -27,11 +27,22 @@ min-height:50px;
 }
 .navbar-brand
 {
-padding-top:12px;
-padding-left:15px;
-padding-bottom:0px;
-font-size:1.8em;
+height: auto;
+max-width: 100%;
+display: block;
+overflow: visible;
 }
+
+.navbar-brand img
+{
+height: 60px;
+width: 120px;
+position: relative;
+bottom: 22px;
+right: 5px;
+}
+
+
 .navbar-default .navbar-brand
 {
 color:#337ab7;
@@ -130,7 +141,63 @@ margin-left:auto;
 margin-right:auto;
 }
 
+.well {
+    background-color: rgba(245, 245, 245, 0.4);
+    
+}
 
+.container
+{
+    width:100%;
+}
+
+.mainPitch
+{
+    position:absolute;
+    top:50px;
+    left:0px;
+    width:inherit;
+}
+#contentBox
+{
+    margin:0px auto;
+    width:auto;
+}
+
+#column1, #column2, #column3
+{
+    float:left;
+    margin:0px auto;
+    width:33%;
+    min-width:200px;
+    padding-left:20px;
+    padding-right:20px;
+    text-align:center
+}
+
+.container .row
+{
+    
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#myCarouselA
+{
+    .carousel { z-index: -99; } /* keeps this behind all content */
+    position:fixed;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:20px;
+}
+
+.carousel-inner img
+{
+    max-height:500px;
+    width:100%;
+    min-height:200px;
+}
 h1
 {
 margin-bottom:30px;
