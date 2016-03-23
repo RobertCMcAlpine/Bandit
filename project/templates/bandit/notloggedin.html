@@ -17,21 +17,21 @@
       <div class="item active">
         <img src="{% static 'images/crowd8.jpg' %}" alt="Crowd Picture"/>
         <div class="carousel-caption">
-          <p class="carousel-font"> In a band? Need a venue? BANDit! Got a venue? Need a band? BANDit! </p>
+          <p> In a band? Need a venue? BANDit! Got a venue? Need a band? BANDit! </p>
         </div>
       </div>
 
       <div class="item">
         <img src="{% static 'images/crowd4.jpg' %}" alt="Crowd Picture"/>
         <div class="carousel-caption">
-         <p class="carousel-font"> Looking to perform? BANDS explore events at venues near you and request to play </p>
+         <p> Looking to perform? BANDS explore events at venues near you and request to play </p>
         </div>
       </div>
     
       <div class="item">
         <img src="{% static 'images/crowd5.jpg' %}" alt="Crowd Picture"/>
         <div class="carousel-caption">
-         <p class="carousel-font"> Need a crowd pleaser? VENUES announce your event and let the bands request you, then simply pick your favourite to perform </p>
+         <p> Need a crowd pleaser? VENUES announce your event and let the bands request you, then simply pick your favourite to perform </p>
         </div>
       </div>
    </div>
@@ -50,13 +50,13 @@
 </div>
 <div class="container-fluid">
 <div class="row">
-<div class="hidden-xs col-sm-12 col-md-12 col-lg-12">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
   <div class="mainPitch">
       <div class="container">
           <div class="row">
-              <div class="hidden-xs col-sm-12 col-md-12 col-lg-12">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <div id="contentBox">
-                  <div id="column1">
+                  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                       <div class="well">
                           NEW BANDS
                           <ul class="list-group requests">
@@ -67,7 +67,7 @@
                       </div>
                   </div>
                   
-                  <div id="column2">
+                  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                       <div class="well">
                           NEW EVENTS
                           <ul class="list-group requests">
@@ -78,7 +78,7 @@
                       </div>
                   </div>
                   
-                  <div id="column3">
+                  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                       <div class="well">
                           NEW VENUES
                           <ul class="list-group requests">
@@ -96,38 +96,4 @@
 </div>
 </div>
 </div>
-
- <div class="row">
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-    </div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-     
-	  <div class="hidden">
-	  <div class="popUp" id="login_form">
-	   <form role="form" method="post" action="/bandit/login/">
-        {% csrf_token %}
-		<div class="form-group">
-        <label>Username:</label>
-        <input class="form-control" type="text" name="username" value="" size="50" />
-        </div>
-		<div class="form-group">
-        <label>Password:</label>
-        <input class="form-control" type="password" name="password" value="" size="50" />
-        </div>
-		<div class="form-group">
-		<input class="form-control btn btn-primary" type="submit" value="Submit" />
-		</div>
-		<p> Do you need to register ? Nae bother , click <a href="/bandit/register/">here</a></p>
-      </form>
-	  </div>
-	  </div>
-	 </div>
-	  
-	    
-	  
-	  
-	    
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-    </div>
-	</div>
-	</div>
+</div>

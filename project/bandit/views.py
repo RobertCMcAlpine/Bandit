@@ -125,7 +125,7 @@ def user_logout(request):
     
     # Take the user back to the homepage.
     #return HttpResponseRedirect('/bandit/')
-    return render(request, 'bandit/index.html', {})
+    return index(request)
 
 
 

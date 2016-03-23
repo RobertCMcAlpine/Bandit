@@ -16,12 +16,12 @@
             {% endif %}
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <p>Description: {{ band.profile.description }}</p>
-            <p>City: {{ band.profile.city }}</p>
-            <p>Phone number: {{ band.profile.phone_number }}</p>
-            <p>Website: {{ band.profile.website }} </p>
-            <p>Members: {{ band.number_of_members }} </p>
-            <p>Genre: {{ band.genre }} </p>
+            <p><b>Description:</b> {{ band.profile.description }}</p>
+            <p><b>City:</b> {{ band.profile.city }}</p>
+            <p><b>Phone number:</b> {{ band.profile.phone_number }}</p>
+            <p><b>Website:</b> <a href="{{ band.profile.website }}" target="_blank">{{ band.profile.website }}</a> </p>
+            <p><b>Members:</b> {{ band.number_of_members }} </p>
+            <p><b>Genre:</b> {{ band.genre }} </p>
 			 {% if accessed_by_owner %}
                <p> <a href="/bandit/band/{{ band.profile.slug }}/edit">Edit Profile</a> </p>
             {% endif %}
