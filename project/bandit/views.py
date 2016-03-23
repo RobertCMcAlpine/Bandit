@@ -10,26 +10,6 @@ from datetime import date,time
 from django.core.mail import send_mail
 
 
-def index(request):
-    context_dict = {}
-
-    # Retrieve the 5 newest bands.
-    new_bands = Band.objects.order_by('-id')[:5]
-    context_dict['new_bands'] = new_bands
-
-    # Retrieve the 5 newest venues.
-    new_venues = Venue.objects.order_by('-id')[:5]
-    context_dict['new_venues'] = new_venues
-
-    # Retrieve 5 upcoming events.
-    today = date.today()
-    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:5]
-    context_dict['upcoming_events'] = upcoming_events
-
-    # Render the response and send it back!
-    return render(request, 'bandit/index.html', context_dict)
-
-
 def register(request):
     
     # A boolean value for telling the template whether the registration was successful.
@@ -144,38 +124,75 @@ def user_logout(request):
     logout(request)
     
     # Take the user back to the homepage.
-    return HttpResponseRedirect('/bandit/')
+    #return HttpResponseRedirect('/bandit/')
+    return index(request)
 
 
 
 
 # Should be called by all the other views!
-@login_required
+#@login_required
 def get_venue_notifications(request):
-    try:
-        # Is the user a venue?
-        venue = Venue.objects.get(profile__user=request.user)
-        new_requests = Request.objects.filter(event__venue=venue, seen=False).order_by('request_date')
-        if not new_requests:
-            return {}
-        return new_requests
+    if request.user.is_authenticated():
+        try:
+            # Is the user a venue?
+            venue = Venue.objects.get(profile__user=request.user)
+            new_requests = Request.objects.filter(event__venue=venue, seen=False).order_by('request_date')
+            if not new_requests:
+            return new_requests
 
-    except Venue.DoesNotExist:
+        except Venue.DoesNotExist:
+            pass
+    else:
         return None
+
 
 # Should be called by all the other views!
-@login_required
+#@login_required
 def get_band_notifications(request):
-    try:
-        # Is the user a band?
-        band = Band.objects.get(profile__user=request.user)
-        new_accepted_events = Event.objects.filter(band=band, seen=False)
-        if not new_accepted_events:
-            return {}
-        return new_accepted_events
+    if request.user.is_authenticated():
+        try:
+            # Is the user a band?
+            band = Band.objects.get(profile__user=request.user)
+            new_accepted_events = Event.objects.filter(band=band, seen=False)
+            if not new_accepted_events:
+            return new_accepted_events
 
-    except Band.DoesNotExist:
+        except Band.DoesNotExist:
+            pass
+    else:
         return None
+
+
+def index(request):
+    context_dict = {}
+
+    band_notifications = get_band_notifications(request)
+    venue_notifications = get_venue_notifications(request)
+
+    # Is the user a venue?
+    if venue_notifications:
+        context_dict['venue_notifications'] = venue_notifications
+
+    # Is the user a band?
+    if band_notifications:
+        context_dict['band_notifications'] = band_notifications
+
+    # Retrieve the 5 newest bands.
+    new_bands = Band.objects.order_by('-id')[:5]
+    context_dict['new_bands'] = new_bands
+
+    # Retrieve the 5 newest venues.
+    new_venues = Venue.objects.order_by('-id')[:5]
+    context_dict['new_venues'] = new_venues
+
+    # Retrieve 5 upcoming events.
+    today = date.today()
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:5]
+    context_dict['upcoming_events'] = upcoming_events
+
+    # Render the response and send it back!
+    return render(request, 'bandit/index.html', context_dict)
 
 
 def band(request, band_profile_name_slug):
