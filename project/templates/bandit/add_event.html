@@ -20,15 +20,7 @@
             <form id="event_form" method="post" action="/bandit/venue/{{ venue_profile_name_slug }}/add_event/">
 
                 {% csrf_token %}
-                {% for hidden in form.hidden_fields %}
-                    {{ hidden }}
-                {% endfor %}
-
-                {% for field in form.visible_fields %}
-                    {{ field.errors }}
-                    {{ field.help_text }}
-                    {{ field }}
-                {% endfor %}
+                {{ form.as_p }}
 
                 <input type="submit" class="btn btn-primary" id="btn-reg" name="submit" value="Create Event" />
             </form>
