@@ -8,8 +8,8 @@
             <ul>
                 {% for band in band_list %}
                     <li><p><a href="/bandit/band/{{ band.profile.slug }}">{{ band.profile.name }}</a></p></li>
-                    <p> description: {{band.profile.description}} </p>
                     <p> genre: {{band.genre}} </p>
+                    <p> band members: {{band.number_of_members}} </p>
                     <hr></hr>
                 {% endfor %}
             </ul>
