@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}Venues{% endblock %}
+
+{% block content_block %}
         {% if venue_list %}
             <h1>Venues</h1>
             <ul>
@@ -8,4 +13,4 @@
         {% else %}
             No venues.
         {% endif %}
-  
+{% endblock %}
