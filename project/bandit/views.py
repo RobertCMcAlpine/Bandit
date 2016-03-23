@@ -293,7 +293,7 @@ def event(request, venue_profile_name_slug, event_date_slug):
 
             # Retrieve the Band that belongs to the user.
             try:
-                band = Band.objects.get(profile=profile)
+                band = Band.objects.get(profile__user=request.user)
                 context_dict['band'] = band
             except Band.DoesNotExist:
                 band = None
