@@ -13,69 +13,69 @@ from datetime import date, time
 def populate():
 	# Adding Leif's Band...
 	leif_user = add_user("leifos", "leifos@itech.com", "leifos")
-	leif_profile = add_profile(leif_user, "Leif's band", "-", "Glasgow",
-		"02392561857", "The coolest band ever.", "B", "www.leifos.com")
+	leif_profile = add_profile(leif_user, "Leif's band", "../../static/images/leifos_prof.png", "Glasgow",
+		"02392561857", "The coolest band ever.", "B", "http://www.twitter.com/leifos")
 	leif_band = add_band(leif_profile, 3, "Rock")
 
 	# Adding Andy's band, Mouse Rat...
 	andy_user = add_user("andy", "andy@itech.com", "andy")
-	andy_profile = add_profile(andy_user, "Mouse Rat", "-", "Pawnee",
-		"02392561857", "You think you found love, but you're standing in The Pit...", "B", "www.mouse-rat.com")
+	andy_profile = add_profile(andy_user, "Mouse Rat", "../../static/images/leifos_prof.png", "Pawnee",
+		"02392561857", "You think you found love, but you're standing in The Pit...", "B", "http://parksandrecreation.wikia.com/wiki/Mouse_Rat")
 	andy_band = add_band(andy_profile, 3, "Rock")
 
 	#Adding Myron's band, Weird Sisters
 	myron_user = add_user("myron", "myron@wizard.com", "myron")
 	myron_profile = add_profile(myron_user, "Weird Sisters", "../../static/images/ws_prof.jpg", "London",
-		"05647234080", "Eccentric glam-rockers with wands", "B", "www.weird-sisters.com")
+		"05647234080", "Eccentric glam-rockers with wands", "B", "http://www.weird-sisters.com")
 	myron_band = add_band(myron_profile, 6, "Unclassifiable")
 
 	#Adding Ulysses' band, The Soggy Bottom Boys
 	ulysses_user = add_user("ulysses", "obrother@where.com", "ulysses")
 	ulysses_profile = add_profile(ulysses_user, "The Soggy Bottom Boys", "-", "Mississippi",
-		"01982477585", "Treasure, what treasure? We just want to sing!", "B", "www.soggy-bottom-boys.com")
+		"01982477585", "Treasure, what treasure? We just want to sing!", "B", "http://www.soggy-bottom-boys.com")
 	ulysses_band = add_band(ulysses_profile, 3, "Folk")
 
 	#Adding Jake's band, The Blues Brothers
 	jake_user = add_user("jake", "bbros@mail.com", "jake")
 	jake_profile = add_profile(jake_user, "The Blues Brothers", "../../static/images/bb_prof.jpg", "Illinois",
-		"01982477585", "We may be a duo just now but we'll be back to a band of 10 soon!", "B", "www.blues-bros.com")
+		"01982477585", "We may be a duo just now but we'll be back to a band of 10 soon!", "B", "http://www.blues-bros.com")
 	jake_band = add_band(jake_profile, 2, "Blues/R&B")
 
 	#Adding Nigel's band, Spinal Tap
 	nigel_user = add_user("nigel", "spinaltap@mail.com", "nigel")
 	nigel_profile = add_profile(nigel_user, "Spinal Tap", "../../static/images/spinal_prof.jpg", "Edinburgh",
-		"0105769445", "We will turn it up to 11 and rock your event!", "B", "www.spinal-tap.com")
+		"0105769445", "We will turn it up to 11 and rock your event!", "B", "http://www.spinal-tap.com")
 	nigel_band = add_band(nigel_profile, 3, "Rock")
 
 
 	# Adding Crappy Maths LT Venue...
 	maths_user = add_user("david", "david@itech.com", "david")
-	maths_profile = add_profile(maths_user, "Crappy Maths Lecture Theatre",  "-", "Glasgow",
-		"02392561857", "Built in 1950", "V", "www.mathsbld.com")
-	maths_venue = add_venue(maths_profile, "University Of Glasgow", "G12 8AB")
+	maths_profile = add_profile(maths_user, "Crappy Maths Lecture Theatre", "../../static/images/maths_prof.jpg", "Glasgow",
+		"02392561857", "Built in 1950", "V", "http://www.gla.ac.uk/schools/mathematicsstatistics/")
+	maths_venue = add_venue(maths_profile, "University Of Glasgow", "G12 8QQ")
 
 	# Adding Laura's pub
 	laura_user = add_user("laura", "laura@itech.com", "laura")
 	laura_profile = add_profile(laura_user, "Laura's Pub",  "-", "Glasgow",
-		"02392561857", "Best pub in town.", "V", "www.lauraspub.co.uk")
-	laura_venue = add_venue(laura_profile, "7 Pub str", "G12 8AB")
+		"02392561857", "Best pub in town.", "V", "http://www.lauraspub.co.uk")
+	laura_venue = add_venue(laura_profile, "Ashton Ln", "G12 8SJ")
 
 	# Adding GUU Venue...
 	guu_user = add_user("fergus", "fergus@guu.com", "fergus")
 	guu_profile = add_profile(guu_user, "Glasgow University Union", "../../static/images/guu_prof.jpg", "Glasgow",
-		"02039096532", "Run by students for students", "V", "www.guu.co.uk")
+		"02039096532", "Run by students for students", "V", "http://www.guu.co.uk")
 	guu_venue = add_venue(guu_profile, "University Of Glasgow", "G12 8AB")
 
 	# Adding Electric Circus Venue...
 	ec_user = add_user("jerry", "jerry@ecircus.com", "jerry")
 	ec_profile = add_profile(ec_user, "Electric Circus",  "-", "Edinburgh",
-		"02039573343", "A rough exterior belies a slick and comfortably compact interior, with a capacity of 250", "V", "www.guu.co.uk")
+		"02039573343", "A rough exterior belies a slick and comfortably compact interior, with a capacity of 250", "V", "http://www.guu.co.uk")
 	ec_venue = add_venue(ec_profile, "35 Market Street", "EH1")
 
 	# Adding Barfly Venue...
 	barfly_user = add_user("lucy", "lucy@barfly.com", "lucy")
 	barfly_profile = add_profile(barfly_user, "Barfly",  "../../static/images/barfly_prof.jpg", "London",
-		"078852218453", "The Barfly champions cool and upcoming talent, making it a destination for music fans and partygoers alike", "V", "www.barfly.co.uk")
+		"078852218453", "The Barfly champions cool and upcoming talent, making it a destination for music fans and partygoers alike", "V", "http://www.barfly.co.uk")
 	barfly_venue = add_venue(barfly_profile, "49 Chalk Farm Road", "NW1 8AN")
 
 	# Adding an event for Crappy Maths LT
